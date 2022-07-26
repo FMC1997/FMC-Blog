@@ -1,12 +1,13 @@
+from ast import Pass
 from crypt import methods
 from flask import Flask, render_template, flash, request
 from flask_wtf import FlaskForm;
-from wtforms import StringField, SubmitField;
-from wtforms.validators import DataRequired;
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError;
+from wtforms.validators import DataRequired, EqualTo, Length;
 from datetime import datetime;
 from flask_sqlalchemy import SQLAlchemy;
 from flask_migrate import Migrate;
-
+from werkzeug.security import generate_password_hash, check_password_hash;
 
 #create a Flask Instance
 app = Flask(__name__)
@@ -32,6 +33,19 @@ class Users(db.Model):
     email = db.Column (db.String(120), nullable=False, unique=True)
     favorite_color = db.Column(db.String(120))
     date_added = db.Column (db.DateTime, default=datetime.utcnow)
+    #hashing password
+    password_hash = db.Column(db.String(128));
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute!')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password);
+    
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password);
+
     #Create a String (Dá o erro FSADeprecationWarning)
     def __repr__(self):
         return '<Name %r>' % self.name
@@ -58,6 +72,8 @@ class UserForm(FlaskForm):
     name = StringField("Name:", validators=[DataRequired()])
     email = StringField("Email:", validators=[DataRequired()])
     favorite_color = StringField("Favorite Color")
+    password_hash = PasswordField('Password', validators=[DataRequired(), EqualTo('password_hash2', message='Password Must Match!')])
+    password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 # Update Database Record
@@ -87,6 +103,11 @@ def update(id):
             id = id)
 
 
+class PasswordForm(FlaskForm):
+    email = StringField("What´s your Email", validators=[DataRequired()])
+    password_hash = PasswordField("What´s your Password", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
 #Create a Form Flask
 class NamerForm(FlaskForm):
     name = StringField("What´s your name", validators=[DataRequired()])
@@ -100,13 +121,16 @@ def add_user():
         #Verificar se esse Email já está na base de dados
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
-            user = Users(name=form.name.data, email=form.email.data, favorite_color=form.favorite_color.data)
+            #Hash the password!!!
+            hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
+            user = Users(name=form.name.data, email=form.email.data, favorite_color=form.favorite_color.data, password_hash=hashed_pw)
             db.session.add(user)
             db.session.commit()
         name = form.name.data
         form.name.data = ''
         form.email.data = ''
         form.favorite_color.data = ''
+        form.password_hash = ''
         flash("User Added Successfully")
     our_users = Users.query.order_by(Users.date_added)
     return render_template("add_user.html", form = form, name=name, our_users=our_users )
@@ -136,6 +160,33 @@ def page_not_found(e):
 @app.errorhandler(500)
 def page_not_found(e):
    return render_template("500.html"), 500  
+
+#Create Password Test Page
+
+@app.route('/test_pw', methods=['GET', 'POST'])
+def test_pw():
+    email = None
+    password = None
+    pw_to_check = None
+    passed = None
+
+    form = PasswordForm()
+    #Validate Form 
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password_hash.data
+        form.email.data = ''
+        form.password_hash.data = ''
+        pw_to_check = Users.query.filter_by(email=email).first()
+
+        #Check hask password
+        passed = check_password_hash(pw_to_check.password_hash, password)
+
+    return render_template("teste_pwd.html",email = email, password = password, pw_to_check = pw_to_check, passed=passed, form=form)    
+
+
+
+
 
 #Create Name Page
 
