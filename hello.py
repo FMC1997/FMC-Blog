@@ -1,6 +1,4 @@
-from ast import Pass
-from crypt import methods
-from flask import Flask, render_template, flash, request
+from flask import Flask, redirect, render_template, flash, request, url_for
 from flask_wtf import FlaskForm;
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError;
 from wtforms.validators import DataRequired, EqualTo, Length;
@@ -8,6 +6,7 @@ from datetime import datetime;
 from flask_sqlalchemy import SQLAlchemy;
 from flask_migrate import Migrate;
 from werkzeug.security import generate_password_hash, check_password_hash;
+from wtforms.widgets import TextArea
 
 #create a Flask Instance
 app = Flask(__name__)
@@ -24,6 +23,95 @@ app.config['SECRET_KEY'] = "my super secret key"
 #Initialize The Database
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+#Create a Blog Post Model
+class Posts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
+    content = db.Column(db.Text)
+    author = db.Column(db.String(255))
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    slug = db.Column(db.String(255))
+
+#Create a Posts Form 
+class PostForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    content = StringField("Content", validators=[DataRequired()], widget=TextArea())
+    author = StringField("Author", validators=[DataRequired()])
+    slug = StringField("Slug", validators=[DataRequired()])
+    submit = SubmitField("Submit", validators=[DataRequired()])
+
+#Deleted a Post
+@app.route('/posts/delete/<int:id>')
+def delete_post(id):
+    post_to_delete = Posts.query.get_or_404(id)
+    try:
+        db.session.delete(post_to_delete)
+        db.session.commit()
+        #return a message
+        flash("Post Was Deleted!")
+        posts = Posts.query.order_by(Posts.date_posted)
+        return render_template("posts.html", posts = posts)
+        
+    except:
+        flash("Whooops! There was a problem deleting post, try again...")
+        posts = Posts.query.order_by(Posts.date_posted)
+        return render_template("posts.html", posts = posts)
+
+@app.route('/posts')
+def posts():
+    #Grab all the post from the database
+    posts = Posts.query.order_by(Posts.date_posted)
+    return render_template("posts.html", posts = posts)
+
+@app.route('/posts/<int:id>')
+def post(id):
+    post = Posts.query.get_or_404(id)
+    return render_template('post.html', post=post)
+
+
+#Edit Post Page
+@app.route('/post/edit/<int:id>', methods=['GET', 'POST'])
+def edit_post(id):
+    post = Posts.query.get_or_404(id)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.author = form.author.data
+        post.slug = form.slug.data
+        post.content = form.content.data
+        #Update post database
+        db.session.add(post)
+        db.session.commit()
+        flash("Post Has been updated!")
+        return redirect(url_for('post', id=post.id))
+    form.title.data = post.title
+    form.author.data = post.author
+    form.slug.data = post.slug
+    form.content.data = post.content
+    return render_template('edit_post.html', form=form)
+
+#Add Post Page
+@app.route('/add-post', methods=['GET', 'Post'])
+def add_post():
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post = Posts(title = form.title.data,
+                     content = form.content.data, 
+                     author = form.author.data,
+                     slug=form.slug.data)
+
+        form.title.data = ''
+        form.content.data = ''
+        form.author.data = ''
+        form.slug.data = ''
+        #Add post data do database
+        db.session.add(post)
+        db.session.commit()
+        flash("Blog Post Submitted Successfully")
+    return render_template("add_post.html", form=form)
+
 
 
 #Create Model
