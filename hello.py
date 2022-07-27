@@ -11,7 +11,7 @@ from wtforms.widgets import TextArea
 #create a Flask Instance
 app = Flask(__name__)
 
-
+#Add SQLlite 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
 #Add Database mySQL
