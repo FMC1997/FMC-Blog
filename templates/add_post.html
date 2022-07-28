@@ -9,33 +9,40 @@
     </div>  
 {% endfor %}
 
-<h1>Add Blog Post...</h1>
-        <br />
-        <div class="shadow p-3 mb-5 bg-body rounded">
-            <form method="post">
-                {{ form.hidden_tag() }}
-                {{ form.title.label(class="form-label") }}
-                {{ form.title(class="form-control") }}
-
-                {{ form.author.label(class="form-label") }}
-                {{ form.author(class="form-control") }}
-
-                {{ form.slug.label(class="form-label") }}
-                {{ form.slug(class="form-control") }}
-                <br />
-
-                {{ form.content.label(class="form-label") }}
-                {{ form.content(class="form-control", rows="5") }}
-                <br />
+{% if current_user.is_authenticated %}
 
 
-                {{form.submit(class="btn btn-secondary") }}
+    <h1>Add Blog Post...</h1>
+    <br />
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control") }}
+
+            {{ form.author.label(class="form-label") }}
+            {{ form.author(class="form-control") }}
+
+            {{ form.slug.label(class="form-label") }}
+            {{ form.slug(class="form-control") }}
+            <br />
+
+            {{ form.content.label(class="form-label") }}
+            {{ form.content(class="form-control", rows="5") }}
+            <br />
 
 
-            </form>
+            {{form.submit(class="btn btn-secondary") }}
 
 
+        </form>
+    </div>  
 
+{% else %}
+    <h1>Must Be Logged In...</h1>
+    <p>Sorry, You must be logged in to access this page!</p>
+    <a href="{{ url_for('login') }}">Login Here</a>
+{% endif %}
 
 
 {% endblock %}

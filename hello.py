@@ -94,6 +94,7 @@ class PostForm(FlaskForm):
 
 #Deleted a Post
 @app.route('/posts/delete/<int:id>')
+@login_required
 def delete_post(id):
     post_to_delete = Posts.query.get_or_404(id)
     try:
@@ -123,6 +124,7 @@ def post(id):
 
 #Edit Post Page
 @app.route('/post/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_post(id):
     post = Posts.query.get_or_404(id)
     form = PostForm()
@@ -144,7 +146,9 @@ def edit_post(id):
 
 #Add Post Page
 @app.route('/add-post', methods=['GET', 'Post'])
+@login_required
 def add_post():
+    
     form = PostForm()
 
     if form.validate_on_submit():
@@ -191,6 +195,7 @@ class Users(db.Model, UserMixin):
         return '<Name %r>' % self.name
 
 @app.route('/delete/<int:id>')
+@login_required
 def delete(id):
     user_to_delete= Users.query.get_or_404(id)
     name = None
@@ -219,6 +224,7 @@ class UserForm(FlaskForm):
 
 # Update Database Record
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
+
 def update(id):
     form = UserForm()
     name_to_update= Users.query.get_or_404(id)
@@ -226,6 +232,7 @@ def update(id):
         name_to_update.name = request.form['name']
         name_to_update.email = request.form['email']
         name_to_update.favorite_color = request.form['favorite_color']
+        name_to_update.username = request.form['username']
         try:
             db.session.commit()
             flash("User Updated Sucessfully")
