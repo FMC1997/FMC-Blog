@@ -1,16 +1,28 @@
+from crypt import methods
 from flask import Flask, redirect, render_template, flash, request, url_for
 
-from datetime import datetime;
+from datetime import datetime
+import flask;
+
 from flask_sqlalchemy import SQLAlchemy;
 from flask_migrate import Migrate;
 from werkzeug.security import generate_password_hash, check_password_hash;
 
 from flask_login import LoginManager, UserMixin, login_user, login_manager, logout_user, login_required, current_user;
 
-from webforms import LoginForm, PostForm , UserForm, PasswordForm, NamerForm
+from webforms import LoginForm, PostForm , UserForm, PasswordForm, NamerForm, SearchForm
+from flask_ckeditor import CKEditor;
+
+
+
+
 
 #create a Flask Instance
 app = Flask(__name__)
+
+ckeditor = CKEditor(app)
+
+
 
 #Add SQLlite 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -34,7 +46,33 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return Users.query.get(int(user_id))
 
+#Pass stuff to navbar
+@app.context_processor
+def base():
+    form = SearchForm()
+    return dict(form=form)
 
+#Admin route
+@app.route('/admin')
+@login_required
+def admin():
+    id = current_user.id
+    if (id == 11):
+        return render_template("admin.html") 
+    else:
+        flash("Sorry you must be the Admin to access")
+        return redirect(url_for('dashboard'))
+
+#Create a Search Function
+@app.route('/search', methods=["POST"])
+def search():
+    form = SearchForm()
+    posts = Posts.query
+    if form.validate_on_submit():
+        post.searched = form.searched.data
+        posts = posts.filter(Posts.content.like('%' + post.searched + '%'))
+        posts = posts.order_by(Posts.title).all()
+        return render_template("search.html", form=form, searched = post.searched, posts = posts)
 
 #Create Login Page
 @app.route('/login', methods=['GET', 'POST'])
@@ -125,10 +163,14 @@ def edit_post(id):
         db.session.commit()
         flash("Post Has been updated!")
         return redirect(url_for('post', id=post.id))
-    form.title.data = post.title
-    form.slug.data = post.slug
-    form.content.data = post.content
-    return render_template('edit_post.html', form=form)
+    if current_user.id == post.poster_id:
+        form.title.data = post.title
+        form.slug.data = post.slug
+        form.content.data = post.content
+        return render_template('edit_post.html', form=form)
+    else:
+        flash("You aren´t Authorized To Edit This Post")
+        posts()
 
 #Add Post Page
 @app.route('/add-post', methods=['GET', 'Post'])
