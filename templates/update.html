@@ -28,6 +28,10 @@
 
             {{ form.favorite_color.label(class="form-label") }}
             {{ form.favorite_color(class="form-control", value=name_to_update.favorite_color) }}
+            
+            {{ form.about_author.label(class="form-label") }}
+            <textarea name="about_author" class="form-control"> {{ name_to_update.about_author }} </textarea>
+            
             <br />
             {{form.submit(class="btn btn-secondary") }}
 
