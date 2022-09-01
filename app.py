@@ -7,6 +7,9 @@ import flask;
 from flask_sqlalchemy import SQLAlchemy;
 from flask_migrate import Migrate;
 from werkzeug.security import generate_password_hash, check_password_hash;
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
 
 from flask_login import LoginManager, UserMixin, login_user, login_manager, logout_user, login_required, current_user;
 
@@ -32,6 +35,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Begin 001.@localho
 
 #Secret Key!
 app.config['SECRET_KEY'] = "my super secret key"
+
+#Upload image
+UPLOAD_FOLDER = "static/images/"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #Initialize The Database
 db = SQLAlchemy(app)
@@ -203,20 +210,22 @@ def add_post():
 @app.route('/delete/<int:id>')
 @login_required
 def delete(id):
-    user_to_delete= Users.query.get_or_404(id)
-    name = None
-    form = UserForm()
-    try:
-        db.session.delete(user_to_delete)
-        db.session.commit()
-        flash("User Deleted Sucessefully")
-        our_users = Users.query.order_by(Users.date_added)
-        return render_template("add_user.html", form = form, name=name, our_users=our_users )
-    except:
-        flash("Whoops! There was a problem, try Again")
-        return render_template("add_user.html", form = form, name=name, our_users=our_users )
-
-
+    if id == current_user.id:
+        user_to_delete= Users.query.get_or_404(id)
+        name = None
+        form = UserForm()
+        try:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+            flash("User Deleted Sucessefully")
+            our_users = Users.query.order_by(Users.date_added)
+            return render_template("add_user.html", form = form, name=name, our_users=our_users )
+        except:
+            flash("Whoops! There was a problem, try Again")
+            return render_template("add_user.html", form = form, name=name, our_users=our_users )
+    else:
+        flash("Sorry you can´t delete that user")
+        return redirect(url_for('dashboard'))
 
 
 # Update Database Record
@@ -231,6 +240,19 @@ def update(id):
         name_to_update.favorite_color = request.form['favorite_color']
         name_to_update.username = request.form['username']
         name_to_update.about_author = request.form['about_author']
+        name_to_update.profile_pic = request.files['profile_pic']
+        
+
+
+        #Grap image in security system
+        pic_filename = secure_filename(name_to_update.profile_pic.filename)
+        #set uuid
+        pic_name = str(uuid.uuid1()) + "_" + pic_filename
+        #Save the image
+        name_to_update.profile_pic.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+        #Change to a string to save to db
+        name_to_update.profile_pic = pic_name
+        
         try:
             db.session.commit()
             flash("User Updated Sucessfully")
@@ -358,8 +380,11 @@ class Users(db.Model, UserMixin):
     favorite_color = db.Column(db.String(120))
     about_author = db.Column(db.Text(500), nullable=True)
     date_added = db.Column (db.DateTime, default=datetime.utcnow)
+    profile_pic = db.Column(db.String(200), nullable=True)
+    
     #hashing password
     password_hash = db.Column(db.String(128));
+
     #User Can have many Posts
     posts = db.relationship('Posts', backref='poster')
 
