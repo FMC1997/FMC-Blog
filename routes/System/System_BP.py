@@ -1,4 +1,5 @@
 
+from pkgutil import extend_path
 from flask import render_template, Blueprint
 
 System_BP = Blueprint("System_BP", __name__, template_folder="templates")
@@ -19,3 +20,4 @@ def page_not_found(e):
 @System_BP.errorhandler(500)
 def page_not_found(e):
    return render_template("500.html"), 500  
+
