@@ -31,16 +31,21 @@
             <strong>Profile Pic </strong> {{ current_user.profile_pic}} <br>
             <strong>Date joined: </strong> {{ current_user.date_added }} <br></p>
 
-          <a href="{{url_for('logout')}}" class="btn btn-sm btn-secondary">Logout</a>
-          <a href="{{url_for('update', id=current_user.id)}}" class="btn btn-sm btn-secondary">Edit</a>
-          <a href="{{ url_for('delete', id=current_user.id)}}" class="btn btn-sm btn-danger">Delete</a>
+          <a href="{{url_for('Users_BP.logout')}}" class="btn btn-sm btn-secondary">Logout</a>
+          <a href="{{url_for('Users_BP.update', id=current_user.id)}}" class="btn btn-sm btn-secondary">Edit</a>
+          <a href="{{ url_for('Users_BP.delete', id=current_user.id)}}" class="btn btn-sm btn-danger">Delete</a>
           <br/>
           <br/>
 
           
         </div>
         <div class="col-4">
-          <img src="{{ url_for('static', filename='images/default_profile_pic.png')}}" width="45%" align="right" />
+          {% if current_user.profile_pic %}
+            <img src="{{ url_for('static', filename='images/' + current_user.profile_pic )}}" width="45%" align="right" />  
+          {% else %}
+            <img src="{{ url_for('static', filename='images/default_profile_pic.png')}}" width="45%" align="right" />    
+          {% endif %}
+          
         </div>
         </div>
         

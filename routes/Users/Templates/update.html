@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 {% for message in get_flashed_messages() %}
@@ -35,10 +34,11 @@
             {{ form.profile_pic.label(class="form-label") }}
             {{ form.profile_pic(class="form-control", value=name_to_update.profile_pic) }}
             
+            
             <br />
             {{form.submit(class="btn btn-secondary") }}
 
-            <a href="{{ url_for('delete', id=id)}}" class="btn btn-danger">Delete</a>
+            <a href="{{ url_for('Users_BP.delete', id=id)}}" class="btn btn-danger">Delete</a>
 
 
             </form>

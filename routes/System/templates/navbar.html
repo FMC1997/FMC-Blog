@@ -1,49 +1,47 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{{ url_for('index') }}">Flasker</a>
+      <a class="navbar-brand" href="{{ url_for('System_BP.index') }}">Flasker</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('user', name='FMC') }}">User Profile</a>
+            <a class="nav-link" href="{{ url_for('Users_BP.user', name='FMC') }}">User Profile</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('name') }}">Name</a>
-          </li>
+    
           
 
           {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+              <a class="nav-link" href="{{ url_for('Users_BP.dashboard') }}">Dashboard</a>
             </li>
           {% if current_user.id == 11 %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('admin') }}">Admin</a>
+              <a class="nav-link" href="{{ url_for('Users_BP.admin') }}">Admin</a>
             </li>
           {% endif %}  
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+              <a class="nav-link" href="{{ url_for('Users_BP.logout') }}">Logout</a>
             </li>
           {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('add_user') }}">Register</a>
+              <a class="nav-link" href="{{ url_for('Users_BP.add_user') }}">Register</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+              <a class="nav-link" href="{{ url_for('Users_BP.login') }}">Login</a>
             </li>
           {% endif %}
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('add_post') }}">Add Blog Post</a>
+            <a class="nav-link" href="{{ url_for('Posts_BP.add_post') }}">Add Blog Post</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('posts') }}">Posts</a>
+            <a class="nav-link" href="{{ url_for('Posts_BP.posts') }}">Posts</a>
           </li>
 
         </ul>
-        <form method = "Post" action = "{{ url_for('search')}}" class="d-flex" role="searched">
-          {{ form.hidden_tag() }}
+        <form method = "Post" action = "{{ url_for('Posts_BP.search')}}" class="d-flex" role="searched">
+          
           <input class="form-control me-2" type="search" name = "searched" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>

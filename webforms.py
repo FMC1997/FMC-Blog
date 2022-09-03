@@ -6,8 +6,6 @@ from flask_ckeditor import CKEditorField
 from flask_wtf.file import FileField
 
 
-
-
 class SearchForm(FlaskForm):
     searched = StringField("Searched", validators=[DataRequired()])
     submit = SubmitField("Submit")
@@ -46,9 +44,4 @@ class UserForm(FlaskForm):
 class PasswordForm(FlaskForm):
     email = StringField("What´s your Email", validators=[DataRequired()])
     password_hash = PasswordField("What´s your Password", validators=[DataRequired()])
-    submit = SubmitField("Submit")
-
-#Create a Form Flask
-class NamerForm(FlaskForm):
-    name = StringField("What´s your name", validators=[DataRequired()])
     submit = SubmitField("Submit")
