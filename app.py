@@ -14,19 +14,12 @@ app.register_blueprint(Users_BP)
 app.register_blueprint(Posts_BP)
 app.register_blueprint(System_BP)
 
-
-
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Begin 001.@localhost/our_users'
 
 #Secret Key!
 app.config['SECRET_KEY'] = "my super secret key"
 
 
-
-#Upload image
-UPLOAD_FOLDER = "static/images/"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #Iniciar Extensões
 db.init_app(app)

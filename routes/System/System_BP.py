@@ -1,8 +1,7 @@
 
-from pkgutil import extend_path
 from flask import render_template, Blueprint
 
-System_BP = Blueprint("System_BP", __name__, template_folder="templates")
+System_BP = Blueprint("System_BP", __name__, template_folder="templates", static_folder="static")
 
 
 #create a route decorator

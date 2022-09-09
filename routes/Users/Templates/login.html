@@ -1,32 +1,37 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    
+    {% block title %} <title>Index!</title> {% endblock %}
+    <!-- Our CSS-->
+    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+
+{% endblock %}
+
 {% block content %}
 
+<script src="/static/js/myfile.js"></script>
 {% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    
-{% endfor %}
+<div class="Alerta fade-in" role="alert">
+    {{message}}
+    <button onclick="delete_message()" type="button" aria-label="Close">X</button> 
+</div>      
+{% endfor %} 
 
-    
-    <h1>Login</h1>
-        
-    <div class="shadow p-3 mb-5 bg-body rounded">
-        <form method="post">
-            {{ form.hidden_tag() }}
-            
+    <p class="page-title"> Login</p>
 
-            {{ form.username.label(class="form-label") }}
-            {{ form.username(class="form-control") }}
-            <br>
-            {{ form.password.label(class="form-label") }}
-            {{ form.password(class="form-control") }}
-            <br>
-            {{form.submit(class="btn btn-secondary") }}
+    <div class="vertical-content content fade-in" style="width: fit-content!important; margin:auto">
+            <form method="post" id="form" >
+                {{ form.hidden_tag() }}
+                {{ form.username.label(class="normal-text") }}
+                {{ form.username(class="input normal-text") }}
+                <br>
+                {{ form.password.label(class="normal-text") }}
+                {{ form.password(class="input normal-text") }}
+                <br>
+                {{form.submit(class="button-set normal-text") }}
 
 
-        </form>
+            </form>
     </div>
 {% endblock %}

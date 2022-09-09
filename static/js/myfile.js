@@ -1,1 +1,3 @@
-document.getElementById('demo').innerHTML = "This was created with Javascript";
+function delete_message () {
+    mesaagem = document.querySelector('.Alerta').style.display = 'none';
+}

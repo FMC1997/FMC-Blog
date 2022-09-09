@@ -1,4 +1,6 @@
 
+from email.mime import application
+from wsgiref.util import application_uri
 from flask import redirect, render_template, flash, request, url_for,Blueprint
 from werkzeug.security import generate_password_hash, check_password_hash;
 from werkzeug.utils import secure_filename
@@ -62,7 +64,7 @@ def update(id):
             #set uuid
             pic_name = str(uuid.uuid1()) + "_" + pic_filename
             #Save the image
-            name_to_update.profile_pic.save(os.path.join(Users.config['UPLOAD_FOLDER'], pic_name))
+            name_to_update.profile_pic.save(os.path.join("static/images/", pic_name))
             #Change to a string to save to db
             name_to_update.profile_pic = pic_name
             
@@ -114,12 +116,7 @@ def add_user():
     return render_template("add_user.html", form = form, name=name, our_users=our_users )
 
 
-@Users_BP.route('/user/<name>')
-def user(name):
-    return render_template("user.html", user_name=name) 
 
-
-    #Create Login Page
 @Users_BP.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()

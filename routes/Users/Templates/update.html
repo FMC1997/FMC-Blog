@@ -1,4 +1,13 @@
 {% extends 'base.html' %}
+
+{% block head %}
+    
+    {% block title %} <title>Index!</title> {% endblock %}
+    <!-- Our CSS-->
+    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+
+{% endblock %}
+
 {% block content %}
 
 {% for message in get_flashed_messages() %}
@@ -13,32 +22,33 @@
     <h1>Update User</h1>
         
     <br />
-        
-    <div class="shadow p-3 mb-5 bg-body rounded">
-        <form action="/update/{{name_to_update.id}}" method="post" enctype="multipart/form-data">
+    <p class="page-title"> Preencha todos os dados para se Registar</p>
+     <div class="vertical-content fade-in" style="width: fit-content!important; margin:auto">
+        <form action="/update/{{name_to_update.id}}" method="post" enctype="multipart/form-data" class="content">
             {{ form.hidden_tag() }}
-            {{ form.name.label(class="form-label") }}
-            {{ form.name(class="form-control", value=name_to_update.name) }}
-
-            {{ form.username.label(class="form-label") }}
-            {{ form.username(class="form-control", value=name_to_update.username) }}
-            {{ form.email.label(class="form-label") }}
-            {{ form.email(class="form-control", value=name_to_update.email) }}
-
-            {{ form.favorite_color.label(class="form-label") }}
-            {{ form.favorite_color(class="form-control", value=name_to_update.favorite_color) }}
-            
-            {{ form.about_author.label(class="form-label") }}
-            <textarea name="about_author" class="form-control"> {{ name_to_update.about_author }} </textarea>
+            {{ form.name.label(class="normal-text") }}
+            {{ form.name(class="input normal-text", value=name_to_update.name) }}
             <br />
-            {{ form.profile_pic.label(class="form-label") }}
-            {{ form.profile_pic(class="form-control", value=name_to_update.profile_pic) }}
+            {{ form.username.label(class="normal-text") }}
+            {{ form.username(class="input normal-text", value=name_to_update.username) }}
+            <br />
+            {{ form.email.label(class="normal-text") }}
+            {{ form.email(class="input normal-text", value=name_to_update.email) }}
+            <br />
+            {{ form.favorite_color.label(class="normal-text") }}
+            {{ form.favorite_color(class="input normal-text", value=name_to_update.favorite_color) }}
+            <br />
+            {{ form.about_author.label(class="normal-text") }} <br />
+            <textarea name="about_author" class="input normal-text"> {{ name_to_update.about_author }} </textarea>
+            <br />
+            {{ form.profile_pic.label(class="normal-text") }}
+            {{ form.profile_pic(class="input normal-text", value=name_to_update.profile_pic) }}
             
             
             <br />
-            {{form.submit(class="btn btn-secondary") }}
+            {{form.submit(class="button-set normal-text") }}
 
-            <a href="{{ url_for('Users_BP.delete', id=id)}}" class="btn btn-danger">Delete</a>
+            <a href="{{ url_for('Users_BP.delete', id=id)}}" class="button-danger">Delete</a>
 
 
             </form>
