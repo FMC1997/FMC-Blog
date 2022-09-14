@@ -10,13 +10,6 @@
 
 {% block content %}
 
-{% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    
-{% endfor %}
 <p class="page-title"> Preencha todos os dados para se Registar</p>
     <div class="form-content">
     <div class="vertical-content content fade-in" style="width: fit-content!important; margin:auto">

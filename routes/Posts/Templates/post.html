@@ -11,18 +11,14 @@
 
 {% block content %}
 <script src="/static/js/myfile.js"></script>
-{% for message in get_flashed_messages() %}
-<div class="Alerta fade-in" role="alert">
-    {{message}}
-    <button onclick="delete_message()" type="button" aria-label="Close">X</button> 
-</div>      
-{% endfor %}
+
 
     <p class="page-title">{{ post.title }}</p>
-    <a href="{{ url_for('Posts_BP.posts') }}" class="button-set" style="margin-left:var(--page-margin)"  >Back</a>
+
+    <a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
     <div class=" post-content content">
         <p class="normal-text"> Date: {{ post.date_posted }}  </p> 
-        <div class="post-safe">
+        <div class="normal-text">
             {{ post.content | safe }} 
         </div>
         <div class="profile-card">     

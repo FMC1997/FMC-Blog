@@ -6,6 +6,10 @@ from flask_ckeditor import CKEditorField
 from flask_wtf.file import FileField
 
 
+class AddImage(FlaskForm):
+    img_upload = FileField("img_upload")
+
+
 class SearchForm(FlaskForm):
     searched = StringField("Searched", validators=[DataRequired()])
     submit = SubmitField("Submit")

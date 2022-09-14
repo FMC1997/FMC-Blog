@@ -11,7 +11,7 @@
           <li> <a href="{{ url_for('Users_BP.dashboard') }}">Dashboard</a> </li>
           <li> <a href="{{ url_for('Posts_BP.add_post') }}">Add Blog Post</a></li>
           {% if current_user.id == 11 %}
-            <li> <a href="{{ url_for('Users_BP.admin') }}">Admin</a> </li>
+            <li> <a href="{{ url_for('System_BP.admin') }}">Admin</a> </li>
           {% endif %}  
           <li> <a href="{{ url_for('Users_BP.logout') }}">Logout</a> </li>
       {% else %}

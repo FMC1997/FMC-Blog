@@ -8,6 +8,7 @@ from flask_login import LoginManager
 from flask import Flask
 from extensions import db,migrate, ckeditor
 
+
 app = Flask(__name__)
 
 app.register_blueprint(Users_BP)

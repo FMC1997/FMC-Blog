@@ -12,22 +12,20 @@
 
 
 {% block content %}
-<script src="/static/js/myfile.js"></script>
-{% for message in get_flashed_messages() %}
-<div class="Alerta fade-in" role="alert">
-    {{message}}
-    <button onclick="delete_message()" type="button" aria-label="Close">X</button> 
-</div>      
-{% endfor %}
-
 <p class="page-title">Blog Posts</p>
+<form method = "Post" action = "{{ url_for('Posts_BP.search')}}" class="pesquisa">
+    {{ form.hidden_tag()}}
+    <input class="input" type="search" name = "searched" placeholder="Pesquisar" aria-label="Pesquisar"> 
+    <button class="button-set" type="submit">Search</button> 
+  </form> 
 <div class="column-content ">
 {% for post in posts %}
     <div class="content fade-in">
     
 
     <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="posts-title"  >{{ post.title }}</a>
-    <img src="{{ url_for('static', filename='images/' + post.post_pic )}}" class="post_pic" />  
+    <img src="{{ url_for('static', filename='images/' + post.post_pic )}}" class="post_pic" /> 
+    
     <p class="normal-text"> {{ post.slug }}</p>
     <div class="buttons">
     <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="btn-posts button-set btn-text">View Post</a>

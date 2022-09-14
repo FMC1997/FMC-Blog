@@ -8,12 +8,36 @@
       {% block title %} <title>Flasker !</title> {% endblock %}
       {% block css %} {% endblock %}
     {% endblock %}
-
+    
   </head>
   <body>
+    <div id="loadingScreen">
+      <span class="loader"> <span class="loader-inner"> </span> </span>
+    </div>
     {% include 'navbar.html' %}
+    {% with messages = get_flashed_messages(category_filter=["sucesso"]) %}
+      {% if messages %}
+          <div class="Alerta_sucesso fade-in" role="alert">
+            {{messages}} 
+            <button onclick="delete_message_sucesso()" type="button" aria-label="Close">X</button> 
+          </div> 
+      {% endif %} 
+    {% endwith %}
+
+    {% with messages = get_flashed_messages(category_filter=["erro"]) %}
+      {% if messages %}
+          <div class="Alerta_erro fullScreen_content slide-in-blurred-top" role="alert">
+            <div class="content">
+              <p class="page-title">ERRO...</p>
+              <p class="normal-text">
+                {{messages}} 
+              </p>
+              <button onclick="delete_message_erro()" class="button-set" type="button" aria-label="Close">OK</button> 
+            </div>
+          </div> 
+      {% endif %} 
+    {% endwith %}
     <div class="web-tools">
-      
       <div class="darkMode">
         <label id="switch">
             <input type="checkbox">
@@ -21,14 +45,18 @@
           </label>
           <p>DarkMode</p>
       </div>
+    </div>
 
-      <form method = "Post" action = "{{ url_for('Posts_BP.search')}}">
-        <input class="input" type="search" name = "searched" placeholder="Search" aria-label="Search"> 
-        <button class="button-set" type="submit">Search</button> 
-      </form> 
-      </div>
+    
+
+
+
+
+          
         {% block content %}
         
         {% endblock %}
   </body>
+  <script type="text/javascript" src="/static/js/darkmode.js"></script>
+  <script type="text/javascript" src="/static/js/flash.js"></script>
 </html>

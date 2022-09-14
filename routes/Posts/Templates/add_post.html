@@ -10,13 +10,8 @@
 
 
 {% block content %}
-<script src="/static/js/myfile.js"></script>
-{% for message in get_flashed_messages() %}
-<div class="Alerta fade-in" role="alert">
-    {{message}}
-    <button onclick="delete_message()" type="button" aria-label="Close">X</button> 
-</div>      
-{% endfor %}
+
+
 
 {% if current_user.is_authenticated %}
     <p class="page-title">{{ page_title }}</p> 

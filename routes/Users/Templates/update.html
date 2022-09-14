@@ -10,22 +10,34 @@
 
 {% block content %}
 
-{% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    
-{% endfor %}
-
 {% if id == current_user.id %}
     <h1>Update User</h1>
         
     <br />
     <p class="page-title"> Preencha todos os dados para se Registar</p>
+    <a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
      <div class="vertical-content fade-in" style="width: fit-content!important; margin:auto">
         <form action="/update/{{name_to_update.id}}" method="post" enctype="multipart/form-data" class="content">
             {{ form.hidden_tag() }}
+            {{ form.profile_pic(id="file-form", value=name_to_update.profile_pic) }}
+            
+                <label for="file-form" class=" file-form-label">
+                    <span> 
+                        <div class="logo-pick">
+                            {% if current_user.profile_pic %}
+                                <img src="{{ url_for('static', filename='images/' + current_user.profile_pic)}}"  />  
+                            {% else %}
+                                <img src="{{ url_for('static', filename='images/default_profile_pic.png')}}"  />    
+                            {% endif %}
+                            <div class="overlay">
+                                <div class="img"><img src="/static/images/icon_mudar.webp" /></div>
+                                
+                            </div>
+                        </div>
+                    </span>
+                </label>
+                
+            <br />
             {{ form.name.label(class="normal-text") }}
             {{ form.name(class="input normal-text", value=name_to_update.name) }}
             <br />
@@ -39,13 +51,10 @@
             {{ form.favorite_color(class="input normal-text", value=name_to_update.favorite_color) }}
             <br />
             {{ form.about_author.label(class="normal-text") }} <br />
-            <textarea name="about_author" class="input normal-text"> {{ name_to_update.about_author }} </textarea>
+            <textarea name="about_author" class="input normal-text">{{ name_to_update.about_author }}</textarea>
             <br />
-            {{ form.profile_pic.label(class="normal-text") }}
-            {{ form.profile_pic(class="input normal-text", value=name_to_update.profile_pic) }}
+        
             
-            
-            <br />
             {{form.submit(class="button-set normal-text") }}
 
             <a href="{{ url_for('Users_BP.delete', id=id)}}" class="button-danger">Delete</a>
