@@ -31,7 +31,7 @@ def page_not_found(e):
 @login_required
 def admin():
     id = current_user.id
-    if (id == 11):
+    if (id == 3):
         return render_template("admin.html") 
     else:
         flash("Não tens as permissões necessárias para entrar nesta página!", "erro")
@@ -46,7 +46,7 @@ def admin():
 @login_required
 def gallery():
     id = current_user.id
-    if (id == 11):
+    if (id == 3):
         caminho = "/home/fmc/Work_Space/flasker"
         os.chdir("static/images/")
         imagens = os.listdir()
@@ -62,7 +62,7 @@ def gallery():
 @login_required
 def removeAll_img():
     id = current_user.id
-    if (id == 11):
+    if (id == 3):
         caminho = "/home/fmc/Work_Space/flasker"
         os.chdir("static/images/")
         imagens = os.listdir()
@@ -78,7 +78,7 @@ def removeAll_img():
 @login_required
 def addImg():
     id = current_user.id
-    if (id == 11):
+    if (id == 3):
         form = AddImage()
         img_upload = form.request.files['img_upload']
         caminho = "/home/fmc/Work_Space/flasker"

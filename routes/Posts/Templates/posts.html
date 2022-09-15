@@ -4,7 +4,28 @@
     
     {% block title %} <title>Index!</title> {% endblock %}
     <!-- Our CSS-->
-    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> 
+        <style>
+            .post_pic {
+                display: block;
+                max-width: 100%;
+                max-height: 200px;
+                margin-inline: auto;
+                overflow: hidden;
+            }
+
+            .posts-title{
+                display: flex;
+                justify-content: center;
+                font-size: 1.2em;
+                font-weight: bold;
+                color: unset;
+                margin-bottom: 20px;
+            }
+
+        </style>
+    
+    {% endblock %}
 
 {% endblock %}
 

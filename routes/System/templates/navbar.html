@@ -2,7 +2,7 @@
   <h1 class="logo"><a href="{{ url_for('System_BP.index') }}">Flasker</a></h1>
   <input type="checkbox" class="nav-toggle" id="nav-toggle">
   <label for="nav-toggle" class="nav-toggle-label">
-    <span><img src="/static/images/navbar-icon.png"  alt="" srcset=""></span>
+    <span><img src="/static/images/navbar-icon.svg"  alt="" srcset=""></span>
   </label>
   
   <nav>
@@ -10,7 +10,7 @@
       {% if current_user.is_authenticated %}
           <li> <a href="{{ url_for('Users_BP.dashboard') }}">Dashboard</a> </li>
           <li> <a href="{{ url_for('Posts_BP.add_post') }}">Add Blog Post</a></li>
-          {% if current_user.id == 11 %}
+          {% if current_user.id == 3 %}
             <li> <a href="{{ url_for('System_BP.admin') }}">Admin</a> </li>
           {% endif %}  
           <li> <a href="{{ url_for('Users_BP.logout') }}">Logout</a> </li>

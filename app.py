@@ -15,7 +15,7 @@ app.register_blueprint(Users_BP)
 app.register_blueprint(Posts_BP)
 app.register_blueprint(System_BP)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Begin 001.@localhost/our_users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Begin 001.@localhost/Blog_flask'
 
 #Secret Key!
 app.config['SECRET_KEY'] = "my super secret key"
@@ -24,8 +24,11 @@ app.config['SECRET_KEY'] = "my super secret key"
 
 #Iniciar Extensões
 db.init_app(app)
+app.app_context().push()
 migrate.init_app(app, db)
 ckeditor.init_app(app)
+
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)

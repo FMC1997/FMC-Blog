@@ -4,7 +4,39 @@
     
     {% block title %} <title>Index!</title> {% endblock %}
     <!-- Our CSS-->
-    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+    {% block css %}
+        <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> 
+        <style>
+            .galery-img {
+                position: relative;
+                background-color: #ffffffba;
+                margin: 3px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 5px;
+                width: 200px;
+            }
+            .galery-img img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .galery-img:hover  img  {
+                box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+                opacity: 0.4;
+            }
+
+            .galery-img:hover .overlay {
+                width: 100%;
+            }
+
+
+        </style>
+    {% endblock %}
     <style>
           
         /* Modal Content (image) */

@@ -1,3 +1,7 @@
+-> Criar sql database(mysql shell)
+    mysqlsh --mysql --uri user@localhost:3306
+    \sql
+    CREATE DATABASE DB
 -> Migrar Base de dados <-
 
     flask db migrate -m "Commit message"
@@ -10,3 +14,4 @@
     export FLASK_APP=hello.py 
     export FLASK_ENV=development 
     flask run
+
