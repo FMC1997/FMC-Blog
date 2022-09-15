@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    
+    {% block title %} <title>Index!</title> {% endblock %}
+    <!-- Our CSS-->
+    {% block css %}
+        <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> 
+        <style>
+            .galery-img {
+                position: relative;
+                background-color: #ffffffba;
+                margin: 3px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 5px;
+                width: 200px;
+            }
+            .galery-img img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .galery-img:hover  img  {
+                box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+                opacity: 0.4;
+            }
+
+            .galery-img:hover .overlay {
+                width: 100%;
+            }
+
+
+        </style>
+    {% endblock %}
+    <style>
+          
+        /* Modal Content (image) */
+        .modal-content {
+          margin: auto;
+          display: block;
+          width: 80%;
+          max-width: 700px;
+        }
+        
+        /* Caption of Modal Image */
+        #caption {
+          margin: auto;
+          display: block;
+          width: 80%;
+          max-width: 700px;
+          text-align: center;
+          color: #ccc;
+          padding: 10px 0;
+          height: 150px;
+        } 
+        /* The Close Button */
+        .close {
+          position: absolute;
+          top: 15px;
+          right: 35px;
+          color: #f1f1f1;
+          font-size: 40px;
+          font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+          color: #bbb;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        
+        </style>
+
+{% endblock %}
+
+{% block content %}
+    
+
+<p class="page-title"> Galeria de imagens </p>
+<a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
+<div class="content horizontal-content fade-in ">
+    <input type="file" id="add-imgs" name="avatar" accept="image/png, image/jpeg" style="display:none">
+    <label for="add-imgs" class="add-img-label" >
+        <span > 
+            <p class="button-set" onclick="{{ url_for('System_BP.addImg') }}">Adicionar imagem</p>
+        </span>
+    </label>
+
+    <a href="{{ url_for('System_BP.removeAll_img')}}" class="button-danger">Apagar todas as imagens</a>
+</div>
+    <div class="column-content content Modal" onclick="" alt="{{imgs}}">
+        {% for imgs in imagens %}
+            <div class="galery-img"  onclick="test('{{imgs}}')">
+                <img src="/static/images/{{imgs}}" class="img-Thumbnail" id="{{imgs}}" alt="{{imgs}}" >
+                
+                
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="myModal" class="fullScreen_content slide-in-blurred-top" style="display: none;">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption" class="normal-text"></div>
+      </div>
+    
+<script>
+    var modal = document.getElementById("myModal");
+    var captionText = document.getElementById("caption");
+    test = function(id){
+        var img_get = document.getElementById('img01')
+        modal.style.display = "flex"
+        captionText.innerHTML = id;
+        var setpath = "/static/images/" + id;
+        img_get.src = setpath;
+        captionText.innerHTML = "<b>Nome: </b>" + id + "</br>"
+        + "<b>Caminho: </b>" + setpath;
+    }
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function(){
+        
+        modal.style.display = "none";
+    }
+
+</script>
+
+{% endblock %}

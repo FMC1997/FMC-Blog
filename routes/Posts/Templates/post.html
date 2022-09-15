@@ -1,61 +1,80 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    
+    {% block title %} <title>Index!</title> {% endblock %}
+    <!-- Our CSS-->
+    {% block css %}
+        <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> 
+        <style>
+            
+            .profile-card {
+                display: flex;
+                flex-direction: row;
+                border: 0;
+                border-top: 3px;
+                padding-top: 30px;
+                border-style: solid;
+                border-color: floralwhite;
+                width: fit-content;
+                margin-block: 40px;
+            }
+
+
+            .profile-card img{
+                max-width: 200px;
+            }
+
+            
+            .post-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                text-align-last: center;
+                margin-inline: auto;
+            }
+
+        </style>
+    {% endblock %}
+
+{% endblock %}
+
+
 {% block content %}
 
-{% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>  
-{% endfor %}
+    <p class="page-title">{{ post.title }}</p>
 
-<h1>Blog Posts</h1>
-<br/>
-
-<div class="shadow p-3 mb-5 bg-body rounded">
-    <h2>{{ post.title }}</h2>
-    
-    Date: {{ post.date_posted }}</small> <br/> 
-    <small> By: {{ post.poster.name }} <br/><br/>
-        {{ post.content | safe }} <br/><br/><br/>
-    <div class="card md-3"> 
-        <div class="row no-gutters">
-            <div class="col-md-2">
-                {% if post.poster.profile_pic %}
-                    <img src="{{ url_for('static', filename='images/' + post.poster.profile_pic )}}" width="150" align="left">
-                {% else %}
-                    <img src="{{ url_for('static', filename='images/default_profile_pic.png')}}" width="150" align="left">
-                {% endif %}    
-            </div>
-            <div class="col-md-10">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        {{ post.poster.name }}
-                    </h5>
-                
-            <p class="card-text">
+    <a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
+    <div class=" post-content content">
+        <p class="normal-text"> Date: {{ post.date_posted }}  </p> 
+        <div class="normal-text">
+            {{ post.content | safe }} 
+        </div>
+        <div class="profile-card">     
+            {% if post.poster.profile_pic %}
+                <img src="{{ url_for('static', filename='images/' + post.poster.profile_pic )}}" width="150" >
+            {% else %}
+                <img src="{{ url_for('static', filename='images/default_profile_pic.svg')}}" width="150" >
+            {% endif %}    
+            <p class="normal-text">
+                <b>{{ post.poster.name }}</b> <br>
                 {% if post.poster.about_author %}
                     {{ post.poster.about_author }}
                 {% else %}
                     Author has no about profile yet...
-                    <br/> <br/>
                 {% endif %}
             </p>
-                </div>
-            </div>
-        </div>
-</div>   
+    </div>
     
-    
-    
-    <a href="{{ url_for('Posts_BP.posts') }}" class="btn btn-sm btn-primary">Back</a>
-    {% if post.poster_id == current_user.id  %}
-        <a href="{{ url_for('Posts_BP.edit_post', id=post.id) }}" class="btn btn-sm btn-primary">Edit Post</a>
-        <a href="{{ url_for('Posts_BP.delete_post', id=post.id) }}" class="btn btn-sm btn-danger">Delete Post</a>
-    {% endif %}
+
+    <div class="buttons">
+        
+        {% if post.poster_id == current_user.id  %}
+            <a href="{{ url_for('Posts_BP.edit_post', id=post.id) }}" class="button-alert">Edit Post</a>
+            <a href="{{ url_for('Posts_BP.delete_post', id=post.id) }}" class="button-danger">Delete Post</a>
+        {% endif %}
+    </div>
 </div>
 
-
-
-
+   
 {% endblock %}

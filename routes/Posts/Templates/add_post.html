@@ -1,41 +1,44 @@
 {% extends 'base.html' %}
+
+{% block head %}
+    
+    {% block title %} <title>Index!</title> {% endblock %}
+    <!-- Our CSS-->
+    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+
+{% endblock %}
+
+
 {% block content %}
 
 
 
-{% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>  
-{% endfor %}
-
 {% if current_user.is_authenticated %}
+    <p class="page-title">{{ page_title }}</p> 
+    <a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
+    <div class="vertical-content ">
+        
+            <form method="post" id="form" class="content fade-in" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                {{ form.title.label(class="normal-text") }}
+                {{ form.title(class="input") }} </br>
 
+                {{ form.slug.label(class="normal-text") }}
+                {{ form.slug(class="input") }} </br>
 
-    <h1>Add Blog Post...</h1>
-    <br />
-    <div class="shadow p-3 mb-5 bg-body rounded">
-        <form method="post">
-            {{ form.hidden_tag() }}
-            {{ form.title.label(class="form-label") }}
-            {{ form.title(class="form-control") }}
+                {{ form.post_pic.label(class="normal-text") }}
+                {{ form.post_pic(class="file-input normal-text", value=post_pic) }} 
+            
 
-            {{ form.slug.label(class="form-label") }}
-            {{ form.slug(class="form-control") }}
-            <br />
+                {{ form.content(class="input", rows="20") }}
+                
+                {{form.submit(class="button-set form-text") }}
+            </form>
 
-            {{ form.content(class="form-control", rows="5") }}
-            <br />
-
-
-            {{form.submit(class="btn btn-secondary") }}
-        </form>
-
-        {{ ckeditor.load() }}
-        {{ ckeditor.config(name='content') }}
-    </div>  
-
+            {{ ckeditor.load() }}
+            {{ ckeditor.config(name='content') }}
+     
+    </div>
 
 {% else %}
     <h1>Must Be Logged In...</h1>

@@ -8,30 +8,27 @@ from flask_login import LoginManager
 from flask import Flask
 from extensions import db,migrate, ckeditor
 
+
 app = Flask(__name__)
 
 app.register_blueprint(Users_BP)
 app.register_blueprint(Posts_BP)
 app.register_blueprint(System_BP)
 
-
-
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Begin 001.@localhost/our_users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Begin 001.@localhost/Blog_flask'
 
 #Secret Key!
 app.config['SECRET_KEY'] = "my super secret key"
 
 
 
-#Upload image
-UPLOAD_FOLDER = "static/images/"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 #Iniciar Extensões
 db.init_app(app)
+app.app_context().push()
 migrate.init_app(app, db)
 ckeditor.init_app(app)
+
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)

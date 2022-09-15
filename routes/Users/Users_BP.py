@@ -1,4 +1,3 @@
-
 from flask import redirect, render_template, flash, request, url_for,Blueprint
 from werkzeug.security import generate_password_hash, check_password_hash;
 from werkzeug.utils import secure_filename
@@ -9,6 +8,8 @@ from webforms import UserForm, LoginForm
 from extensions import db
 from flask_login import  UserMixin
 from datetime import datetime
+
+
 
 Users_BP = Blueprint("Users_BP", __name__, static_folder="./static", template_folder="Templates")
 
@@ -29,14 +30,14 @@ def delete(id):
         try:
             db.session.delete(user_to_delete)
             db.session.commit()
-            flash("User Deleted Sucessefully")
+            flash("Utilizador apagado com sucesso!", "sucesso")
             our_users = Users.query.order_by(Users.date_added)
             return render_template("Users/add_user.html", form = form, name=name, our_users=our_users )
         except:
-            flash("Whoops! There was a problem, try Again")
+            flash("Não conseguimos apagar esse utilizador, tente novamente!", "erro")
             return render_template("add_user.html", form = form, name=name, our_users=our_users )
     else:
-        flash("Sorry you can´t delete that user")
+        flash("Não tens as permissões necessárias para apagar este utilizador!", "erro")
         return redirect(url_for('dashboard'))
 
 
@@ -52,8 +53,6 @@ def update(id):
         name_to_update.favorite_color = request.form['favorite_color']
         name_to_update.username = request.form['username']
         name_to_update.about_author = request.form['about_author']
-        
-
         #check profile pic exist´s
         if request.files['profile_pic']:
             name_to_update.profile_pic = request.files['profile_pic']
@@ -62,24 +61,24 @@ def update(id):
             #set uuid
             pic_name = str(uuid.uuid1()) + "_" + pic_filename
             #Save the image
-            name_to_update.profile_pic.save(os.path.join(Users.config['UPLOAD_FOLDER'], pic_name))
+            name_to_update.profile_pic.save(os.path.join("static/images/", pic_name))
             #Change to a string to save to db
             name_to_update.profile_pic = pic_name
             
             try:
                 db.session.commit()
-                flash("User Updated Sucessfully")
+                flash("Utilizador atualizado com sucesso!", "sucesso")
                 return render_template("dashboard.html",
                 form=form,
                 name_to_update = name_to_update, id=id)
             except:
-                flash("Error! Looks like was a problem, try again!")
+                flash("Não conseguimos atualizar esse utilizador, tente novamente!", "erro")
                 return render_template("update.html",
                 form=form,
                 name_to_update = name_to_update, id=id)
         else:
             db.session.commit()
-            flash("User updated Sucessfully")
+            flash("Utilizador atualizado com sucesso!", "sucesso")
             return render_template("dashboard.html",
                 form=form,
                 name_to_update = name_to_update, id=id)
@@ -109,17 +108,13 @@ def add_user():
         form.username = ''
         form.favorite_color.data = ''
         form.password_hash = ''
-        flash("User Added Successfully")
+        flash("O seu utilizador foi criado com sucesso", "sucesso")
+        return redirect(url_for('Users_BP.login'))
     our_users = Users.query.order_by(Users.date_added)
     return render_template("add_user.html", form = form, name=name, our_users=our_users )
 
 
-@Users_BP.route('/user/<name>')
-def user(name):
-    return render_template("user.html", user_name=name) 
 
-
-    #Create Login Page
 @Users_BP.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -129,12 +124,12 @@ def login():
             #Check password hash
             if check_password_hash(user.password_hash, form.password.data):
                 login_user(user)
-                flash("Login Successfully!!")
-                return redirect(url_for('Users_BP.dashboard'))
+                flash("Entrada com sucesso!", "sucesso")
+                return redirect(url_for('Posts_BP.posts'))
             else:
-                flash("Wrong Password - Try Again!!")
+                flash("Palavra-passe incorreta!", "erro")
         else:
-            flash("Username doesnt exist! - Try Again!!! ")
+            flash("Utilizador não encontrado!", "erro")
     return render_template('login.html', form=form)
 
 
@@ -143,20 +138,9 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("You Have Been Logged Out!")
+    flash("Saida com sucesso!", "sucesso")
     return redirect(url_for('Users_BP.login'))
 
-
-#Admin route
-@Users_BP.route('/admin')
-@login_required
-def admin():
-    id = current_user.id
-    if (id == 11):
-        return render_template("admin.html") 
-    else:
-        flash("Sorry you must be the Admin to access")
-        return redirect(url_for('dashboard'))
 
 
 

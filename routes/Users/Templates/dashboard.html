@@ -1,52 +1,53 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    
+    {% block title %} <title>Index!</title> {% endblock %}
+    <!-- Our CSS-->
+    {% block css %}
+      <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> 
+      <style>
+        .dashboard img{
+          display: inline-flex;
+          height: 18vw;
+          max-height: 300px;
+        }
+
+        .dashboard{
+          max-width: 1000px;
+          margin-inline: auto;
+        }
+      </style>
+    {% endblock %}
+
+{% endblock %}
+
+
 {% block content %}
 
-{% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    
-{% endfor %}
-
-    
-    <h2>Dashboard</h2>
-    <br><br>
-    <div class="card">
-        <div class="card-header">
-            {{ current_user.name }}
-        </div>
-        <div class="card-body">
-          
-          <p class="card-text">
-            <div class="container">
-              <div class="row">
-                <div class="col-8">
-            <strong>Username:</strong> {{ current_user.username}} <br>
-            <strong>User id:</strong> {{ current_user.id }}<br>
-            <strong>Email: </strong>{{ current_user.email }} <br>
-            <strong>Favorite Color:</strong> {{ current_user.favorite_color }} <br>
-            <strong>About Author: </strong> {{ current_user.about_author}} <br>
-            <strong>Profile Pic </strong> {{ current_user.profile_pic}} <br>
-            <strong>Date joined: </strong> {{ current_user.date_added }} <br></p>
-
-          <a href="{{url_for('Users_BP.logout')}}" class="btn btn-sm btn-secondary">Logout</a>
-          <a href="{{url_for('Users_BP.update', id=current_user.id)}}" class="btn btn-sm btn-secondary">Edit</a>
-          <a href="{{ url_for('Users_BP.delete', id=current_user.id)}}" class="btn btn-sm btn-danger">Delete</a>
-          <br/>
-          <br/>
-
-          
-        </div>
-        <div class="col-4">
-          {% if current_user.profile_pic %}
-            <img src="{{ url_for('static', filename='images/' + current_user.profile_pic )}}" width="45%" align="right" />  
-          {% else %}
-            <img src="{{ url_for('static', filename='images/default_profile_pic.png')}}" width="45%" align="right" />    
-          {% endif %}
-          
-        </div>
+    <p class="page-title">Dashboard</p> 
+    <a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
+    <div class="content horizontal-content dashboard fade-in ">
+      {% if current_user.profile_pic %}
+      <img src="{{ url_for('static', filename='images/' + current_user.profile_pic )}}"  />  
+    {% else %}
+      <img src="{{ url_for('static', filename='images/default_profile_pic.svg')}}"  />    
+    {% endif %}
+           
+        <div class="dashboard-card">
+          <p class="normal-text">
+            <b>Name:</b> {{ current_user.name}} <br>
+            <b>Username:</b> {{ current_user.username}} <br>
+            <b>User id:</b> {{ current_user.id }}<br>
+            <b>Email: </b>{{ current_user.email }} <br>
+            <b>Favorite Color:</b> {{ current_user.favorite_color }} <br>
+            <b>About Author: </b> {{ current_user.about_author}} <br>
+            <b>Date joined: </b> {{ current_user.date_added }} <br></p>
+            <p class="buttons">
+          <a href="{{url_for('Users_BP.logout')}}" class="button-set">Logout</a>
+          <a href="{{url_for('Users_BP.update', id=current_user.id)}}" class="button-alert">Edit</a>
+          <a href="{{ url_for('Users_BP.delete', id=current_user.id)}}" class="button-danger">Delete</a>
+          </p>
         </div>
         
       </div>

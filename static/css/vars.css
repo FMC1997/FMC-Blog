@@ -1,0 +1,32 @@
+:root {
+    --bg-svg : url(/static/images/desert_landscape.svg);
+    --bg-color: #c45f2a; 
+    --txt-color: #1c1e20;
+    --box-backgroud : rgba(164, 221, 255, 0.40);
+    --witcher : #2ac0c4;
+    --anim-name : fade-in;
+    --bg-name : bg-moving;
+    --danger-color: #c45f2a;
+    --set-color: #68c42a;
+    --alert-color: #bac42a;
+    --pa-text: 22px;
+    --title-text : 1.8em;
+    --page-margin : 5%;
+  }
+  
+  
+  
+  .dark-mode:root{
+    --bg-svg : url(/static/images/desert_landscape_night.svg);
+    --txt-color: #ffffff;
+    --box-backgroud : rgb(164 221 255 / 41%);
+    --witcher : #2ac0c4;
+    --bg-color: #001744;
+    --anim-name: darkmode;
+    --bg-name : bg-darkmode;
+    --danger-color: #c45f2a;
+    --set-color: #68c42a;
+    --alert-color: #bac42a;
+  }
+  
+
