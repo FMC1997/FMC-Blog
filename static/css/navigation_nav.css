@@ -1,5 +1,4 @@
-@import "vars.css";
-
+@import "anim.css";
 body{
     margin: 0;
 }
@@ -14,31 +13,41 @@ header{
     width: 100%;
 }
 
-.nav-toggle{
-    display: none;
+button#darkMode-toggle{
+    background: none;
+    border: none;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    margin-block: auto;
 }
 
-.nav-toggle-label{
+#nav-toggle{
     position: absolute;
     top: 20px;
-    left: 20px;
+    right: 20px;
     margin-left: 1em;
     height: 40px;
+    z-index: 2;
+    border: 0;
+    background: none;
 }
 
-.nav-toggle-label img{
+
+#nav-toggle img{
     height: 100%;
 }
 
 nav {
-    background-color: var(--box-backgroud);
-    position: absolute;
-    text-align: left;
-    left: 0;
-    width: 100%;
-    transform: scale(1,0);
-    transform-origin: top;
-    transition: transform 400ms ease-in-out;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 75%; 
+    right: 0;
+    top: 0;
+    height: 100vh;
+    background-color: hsla(202, 51%, 61%, 0.897);
 }
 
 nav ul {
@@ -60,30 +69,22 @@ nav a{
     font-size: .98rem;
     text-transform: uppercase;
     font-weight: bold;
-    opacity: 0;
-    transition: opacity 150ms ease-in-out;
 }
 
 nav a:hover{
     color: #1f7e77;
 
 }
-.nav-toggle:checked ~ nav {
-    transform: scale(1,1);
+/*
+@supports (backdrop-filter: blur(1rem)){
+    nav{
+        background-color: hsl(202, 51%, 61% / 0.431);
+        backdrop-filter: blur(1rem);
+    }
 }
-
-.nav-toggle:checked ~ nav a {
-    opacity: 1;
-    transition: opacity 250ms ease-in-out 250ms;
-}
-
-
-
-
-
-
+*/
 @media screen and (min-width: 900px) {
-    .nav-toggle-label{
+    #nav-toggle{
         display: none;
     }
 
@@ -102,6 +103,8 @@ nav a:hover{
         justify-content: flex-end;
         align-items: center;
         margin-right: 2.46%;
+        display: flex !important;
+        transform: matrix(0,0,0)!important;
     }
     nav ul{
         display: flex;

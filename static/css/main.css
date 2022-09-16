@@ -244,6 +244,9 @@ a,p {
     border-radius: 0px;
 }
 
+input#post_pic{
+  max-width: 84vw;
+}
 
 form.pesquisa {
   display: flex;

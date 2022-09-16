@@ -32,29 +32,27 @@ def delete_post(id):
             db.session.commit()
             #return a message
             flash("O Post foi apagado com sucesso!", "sucesso")
-            posts = Posts.query.order_by(Posts.date_posted)
-            return render_template("posts.html", posts = posts)
+            return redirect('/posts')
                 
         except:
             flash("Houve um problema a apagar o seu Post, tente novamente mais tarde", "erro")
-            posts = Posts.query.order_by(Posts.date_posted)
-            return render_template("posts.html", posts = posts)
+            return redirect('/posts')
     else:
         flash("Não tens a permissões necessárias para apagar este post", "erro")
-        posts = Posts.query.order_by(Posts.date_posted)
-        return render_template("posts.html", posts = posts)
+        return redirect('/posts')
 
 
 @Posts_BP.route('/posts')
 def posts():
-    #Grab all the post from the database
+    page_title = "Blog"
     posts = Posts.query.order_by(Posts.date_posted)
-    return render_template("posts.html", posts = posts)
+    return render_template("posts.html", posts = posts, page_title=page_title)
 
 @Posts_BP.route('/post/<int:id>')
 def post(id):
     post = Posts.query.get_or_404(id)
-    return render_template('post.html', post=post)
+    page_title = post.title 
+    return render_template('post.html', post=post, page_title=page_title)
 
 
 #Edit Post Page
@@ -71,7 +69,8 @@ def edit_post(id):
         db.session.add(post)
         db.session.commit()
         flash("O Post foi atualizado com sucesso!", "sucesso")
-        return render_template('post.html', post=post)
+        page_title = post.title 
+        return redirect('/posts')
     if current_user.id == post.poster_id:
         page_title = 'A editar "' + post.title + '"' 
         form.title.data = post.title
@@ -80,7 +79,7 @@ def edit_post(id):
         return render_template("add_post.html", form=form, page_title=page_title)
     else:
         flash("Não tens a permissões necessárias para apagar este post!", "erro")
-        posts()
+        return redirect('/posts')
 
 #Add Post Page
 @Posts_BP.route('/add-post', methods=['POST', 'GET'])
@@ -109,8 +108,7 @@ def add_post():
             form.slug.data = ''
             form.post_pic.data = ''
             flash("O Post foi publicado com sucesso!", "sucesso")
-            
-            return render_template("add_post.html", form=form, page_title=page_title)
+            return redirect('/posts')
         
         except:
             flash("Erro a publicar o seu post, tente novamente!", "erro")
@@ -126,16 +124,15 @@ def add_post():
 @Posts_BP.route('/search', methods=["POST"])
 def search():
     form = SearchForm()
-   
     posts = Posts.query
     if form.validate_on_submit():
         searched = form.searched.data
         posts = posts.filter(Posts.content.like('%' + searched + '%'))
         posts = posts.order_by(Posts.title).all()
-        return render_template("posts.html",  posts = posts)
+        return redirect('/posts')
     else:
         flash("Não foi encontrado nenhum post com a palavra '" + form.searched.data +"'!", "erro" )
-    return render_template("posts.html",  posts = posts)
+    return redirect('/posts')
 
 @Posts_BP.context_processor
 def base():

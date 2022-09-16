@@ -16,7 +16,7 @@
   
   
   
-  .dark-mode:root{
+  .darkMode{
     --bg-svg : url(/static/images/desert_landscape_night.svg);
     --txt-color: #ffffff;
     --box-backgroud : rgb(164 221 255 / 41%);

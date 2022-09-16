@@ -1,74 +1,73 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    
-    {% block title %} <title>Index!</title> {% endblock %}
-    <!-- Our CSS-->
-    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+
+{% block title %} <title>Index!</title> {% endblock %}
+<!-- Our CSS-->
+{% block css %}
+{% endblock %}
 
 {% endblock %}
 
 {% block content %}
 
 {% if id == current_user.id %}
-    <h1>Update User</h1>
-        
-    <br />
-    <p class="page-title"> Preencha todos os dados para se Registar</p>
-    <a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
-     <div class="vertical-content fade-in" style="width: fit-content!important; margin:auto">
-        <form action="/update/{{name_to_update.id}}" method="post" enctype="multipart/form-data" class="content">
-            {{ form.hidden_tag() }}
-            {{ form.profile_pic(id="file-form", value=name_to_update.profile_pic) }}
-            
-                <label for="file-form" class=" file-form-label">
-                    <span> 
-                        <div class="logo-pick">
-                            {% if current_user.profile_pic %}
-                                <img src="{{ url_for('static', filename='images/' + current_user.profile_pic)}}"  />  
-                            {% else %}
-                                <img src="{{ url_for('static', filename='images/default_profile_pic.svg')}}"  />    
-                            {% endif %}
-                            <div class="overlay">
-                                <div class="img"><img src="/static/images/icon_mudar.svg" /></div>
-                                
-                            </div>
-                        </div>
-                    </span>
-                </label>
-                
-            <br />
-            {{ form.name.label(class="normal-text") }}
-            {{ form.name(class="input normal-text", value=name_to_update.name) }}
-            <br />
-            {{ form.username.label(class="normal-text") }}
-            {{ form.username(class="input normal-text", value=name_to_update.username) }}
-            <br />
-            {{ form.email.label(class="normal-text") }}
-            {{ form.email(class="input normal-text", value=name_to_update.email) }}
-            <br />
-            {{ form.favorite_color.label(class="normal-text") }}
-            {{ form.favorite_color(class="input normal-text", value=name_to_update.favorite_color) }}
-            <br />
-            {{ form.about_author.label(class="normal-text") }} <br />
-            <textarea name="about_author" class="input normal-text">{{ name_to_update.about_author }}</textarea>
-            <br />
-        
-            
-            {{form.submit(class="button-set normal-text") }}
+<h1>Update User</h1>
+<br />
+<a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
+<div class="vertical-content fade-in" style="width: fit-content!important; margin:auto">
+    <form action="/update/{{name_to_update.id}}" method="post" enctype="multipart/form-data" class="content">
+        {{ form.hidden_tag() }}
+        {{ form.profile_pic(id="file-form", value=name_to_update.profile_pic) }}
 
-            <a href="{{ url_for('Users_BP.delete', id=id)}}" class="button-danger">Delete</a>
+        <label for="file-form" class=" file-form-label">
+            <span>
+                <div class="logo-pick">
+                    {% if current_user.profile_pic %}
+                    <img src="{{ url_for('static', filename='images/' + current_user.profile_pic)}}" />
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default_profile_pic.svg')}}" />
+                    {% endif %}
+                    <div class="overlay">
+                        <div class="img"><img src="/static/images/icon_mudar.svg" /></div>
+
+                    </div>
+                </div>
+            </span>
+        </label>
+
+        <br />
+        {{ form.name.label(class="normal-text") }}
+        {{ form.name(class="input normal-text", value=name_to_update.name) }}
+        <br />
+        {{ form.username.label(class="normal-text") }}
+        {{ form.username(class="input normal-text", value=name_to_update.username) }}
+        <br />
+        {{ form.email.label(class="normal-text") }}
+        {{ form.email(class="input normal-text", value=name_to_update.email) }}
+        <br />
+        {{ form.favorite_color.label(class="normal-text") }}
+        {{ form.favorite_color(class="input normal-text", value=name_to_update.favorite_color) }}
+        <br />
+        {{ form.about_author.label(class="normal-text") }} <br />
+        <textarea name="about_author" class="input normal-text">{{ name_to_update.about_author }}</textarea>
+        <br />
 
 
-            </form>
-        </div>
+        {{form.submit(class="button-set normal-text") }}
+
+        <a href="{{ url_for('Users_BP.delete', id=id)}}" class="button-danger">Delete</a>
+
+
+    </form>
+</div>
 
 {% else %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        Sorry! You can´t Edit This User!
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <h2>Acess Denied!</h2>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    Sorry! You can´t Edit This User!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<h2>Acess Denied!</h2>
 {% endif %}
 
 {% endblock %}

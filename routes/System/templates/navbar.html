@@ -1,33 +1,32 @@
-<header>
-  <h1 class="logo"><a href="{{ url_for('System_BP.index') }}">Flasker</a></h1>
-  <input type="checkbox" class="nav-toggle" id="nav-toggle">
-  <label for="nav-toggle" class="nav-toggle-label">
-    <span><img src="/static/images/navbar-icon.svg"  alt="" srcset=""></span>
-  </label>
-  
-  <nav>
-    <ul>
-      {% if current_user.is_authenticated %}
-          <li> <a href="{{ url_for('Users_BP.dashboard') }}">Dashboard</a> </li>
-          <li> <a href="{{ url_for('Posts_BP.add_post') }}">Add Blog Post</a></li>
-          {% if current_user.id == 3 %}
-            <li> <a href="{{ url_for('System_BP.admin') }}">Admin</a> </li>
-          {% endif %}  
-          <li> <a href="{{ url_for('Users_BP.logout') }}">Logout</a> </li>
-      {% else %}
-          <li> <a href="{{ url_for('Users_BP.add_user') }}">Register</a> </li>
-          <li> <a href="{{ url_for('Users_BP.login') }}">Login</a> </li>
-      {% endif %}
+<!DOCTYPE html>
+<html>
 
-      
-      <li> <a href="{{ url_for('Posts_BP.posts') }}">Posts</a> </li>
-       
+<body>
 
-      </li>
-    
-    </div>
-      
-    </ul>
-  </nav>
-  
-</header>
+  <header>
+    <button id="darkMode-toggle"><img src="/static/images/darkMode_icon.svg" alt="" srcset=""></button>
+    <h1 class="logo"><a href="{{ url_for('System_BP.index') }}">Flasker</a></h1>
+    <button alt="" srcset="" id="nav-toggle"> <img src="/static/images/navBarIcon_plan.svg" alt="" /> </button>
+    <nav>
+      <ul>
+        {% if current_user.is_authenticated %}
+        <li> <a href="{{ url_for('Users_BP.dashboard') }}">Dashboard</a> </li>
+        <li> <a href="{{ url_for('Posts_BP.add_post') }}">Add Blog Post</a></li>
+        {% if current_user.id == 3 %}
+        <li> <a href="{{ url_for('System_BP.admin') }}">Admin</a> </li>
+        {% endif %}
+        <li> <a href="{{ url_for('Users_BP.logout') }}">Logout</a> </li>
+        {% else %}
+        <li> <a href="{{ url_for('Users_BP.add_user') }}">Register</a> </li>
+        <li> <a href="{{ url_for('Users_BP.login') }}">Login</a> </li>
+        {% endif %}
+        <li> <a href="{{ url_for('Posts_BP.posts') }}">Posts</a> </li>
+      </ul>
+    </nav>
+  </header>
+
+  <script src="/static/js/mobileNav-toggle.js"></script>
+
+</body>
+
+</html>

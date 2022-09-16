@@ -13,7 +13,8 @@ System_BP = Blueprint("System_BP", __name__, template_folder="templates", static
 @System_BP.route('/')
 def index():
     first_name = "John"
-    return render_template("index.html", first_name=first_name) 
+    page_title = "Pagina Inicial"
+    return render_template("index.html", first_name=first_name, page_title=page_title) 
 
 # Invalid URL
 @System_BP.errorhandler(404)
@@ -30,9 +31,10 @@ def page_not_found(e):
 @System_BP.route('/admin')
 @login_required
 def admin():
+    page_title = "Admin Painel"
     id = current_user.id
     if (id == 3):
-        return render_template("admin.html") 
+        return render_template("admin.html", page_title=page_title) 
     else:
         flash("Não tens as permissões necessárias para entrar nesta página!", "erro")
         return redirect(url_for('dashboard'))
@@ -45,6 +47,7 @@ def admin():
 @System_BP.route('/admin/gallery')
 @login_required
 def gallery():
+    page_title = "Galeria de Imagens"
     id = current_user.id
     if (id == 3):
         caminho = "/home/fmc/Work_Space/flasker"
@@ -52,10 +55,10 @@ def gallery():
         imagens = os.listdir()
         
         os.chdir(caminho)
-        return render_template("gallery.html", imagens=imagens) 
+        return render_template("gallery.html", imagens=imagens,page_title=page_title) 
     else:
         flash("Não tens as permissões necessárias para entrar nesta página!", "erro")
-        return redirect(url_for('dashboard'))
+        return redirect('/dashboard')
 
 
 @System_BP.route('/admin/removeAll-img')
@@ -69,10 +72,9 @@ def removeAll_img():
         for img in imagens:
             os.remove(img)
         os.chdir(caminho)
-        return redirect(url_for('System_BP.gallery'))
+        return redirect('/admin/gallery')
     else:
-        
-        return redirect(url_for('dashboard'))
+        return redirect('/dashboard')
 
 @System_BP.route('/admin/add_img')
 @login_required
@@ -85,10 +87,10 @@ def addImg():
         os.path.join("static/images/", img_upload)
         os.chdir(caminho)
         flash("Imagem guardada com sucesso!", "sucesso")
-        return redirect(url_for('System_BP.gallery'))
+        return redirect('/admin/gallery')
     else:
         flash("Não tens as permissões necessárias para entrar nesta página!", "erro")
-        return redirect(url_for('dashboard'))
+        return redirect('/dashboard')
     
 
 

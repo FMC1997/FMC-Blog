@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    
-    {% block title %} <title>Index!</title> {% endblock %}
-    <!-- Our CSS-->
-    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+
+{% block title %} <title>Index!</title> {% endblock %}
+<!-- Our CSS-->
+{% block css %}{% endblock %}
 
 {% endblock %}
 
@@ -13,10 +13,10 @@
 <a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
 
 
-    <h1>Hello World!</h1>
+<h1>Hello World!</h1>
 
-    <p>This is my first page</p>
+<p>This is my first page</p>
 
-    <p> My name is {{ first_name }}</p>
+<p> My name is {{ first_name }}</p>
 
 {% endblock %}

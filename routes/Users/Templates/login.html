@@ -1,30 +1,28 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    
-    {% block title %} <title>Index!</title> {% endblock %}
-    <!-- Our CSS-->
-    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+
+{% block title %} <title>Index!</title> {% endblock %}
+<!-- Our CSS-->
+{% block css %}
+{% endblock %}
 
 {% endblock %}
 
 {% block content %}
 
-
-    <p class="page-title"> Login</p>
-
-    <div class="vertical-content content fade-in">
-            <form method="post" id="form" >
-                {{ form.hidden_tag() }}
-                {{ form.username.label(class="normal-text") }}
-                {{ form.username(class="input normal-text") }}
-                <br>
-                {{ form.password.label(class="normal-text") }}
-                {{ form.password(class="input normal-text") }}
-                <br>
-                {{form.submit(class="button-set normal-text") }}
+<div class="vertical-content content fade-in">
+    <form method="post" id="form">
+        {{ form.hidden_tag() }}
+        {{ form.username.label(class="normal-text") }}
+        {{ form.username(class="input normal-text") }}
+        <br>
+        {{ form.password.label(class="normal-text") }}
+        {{ form.password(class="input normal-text") }}
+        <br>
+        {{form.submit(class="button-set normal-text") }}
 
 
-            </form>
-    </div>
+    </form>
+</div>
 {% endblock %}

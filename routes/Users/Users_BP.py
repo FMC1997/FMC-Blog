@@ -17,8 +17,8 @@ Users_BP = Blueprint("Users_BP", __name__, static_folder="./static", template_fo
 @Users_BP.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    
-    return render_template('dashboard.html')
+    page_title = "Dashboard";
+    return render_template('dashboard.html', page_title=page_title)
 
 @Users_BP.route('/delete/<int:id>')
 @login_required
@@ -32,13 +32,13 @@ def delete(id):
             db.session.commit()
             flash("Utilizador apagado com sucesso!", "sucesso")
             our_users = Users.query.order_by(Users.date_added)
-            return render_template("Users/add_user.html", form = form, name=name, our_users=our_users )
+            return redirect('/user/add')
         except:
             flash("Não conseguimos apagar esse utilizador, tente novamente!", "erro")
             return render_template("add_user.html", form = form, name=name, our_users=our_users )
     else:
         flash("Não tens as permissões necessárias para apagar este utilizador!", "erro")
-        return redirect(url_for('dashboard'))
+        return redirect('/dashboard')
 
 
 # Update Database Record
@@ -47,6 +47,7 @@ def delete(id):
 def update(id):
     form = UserForm()
     name_to_update= Users.query.get_or_404(id)
+    page_title = "A atualizar o Utilizador " + name_to_update.username;
     if request.method == "POST":
         name_to_update.name = request.form['name']
         name_to_update.email = request.form['email']
@@ -68,30 +69,27 @@ def update(id):
             try:
                 db.session.commit()
                 flash("Utilizador atualizado com sucesso!", "sucesso")
-                return render_template("dashboard.html",
-                form=form,
-                name_to_update = name_to_update, id=id)
+                return redirect('/dashboard')
             except:
                 flash("Não conseguimos atualizar esse utilizador, tente novamente!", "erro")
                 return render_template("update.html",
                 form=form,
-                name_to_update = name_to_update, id=id)
+                name_to_update = name_to_update, id=id, page_title=page_title)
         else:
             db.session.commit()
             flash("Utilizador atualizado com sucesso!", "sucesso")
-            return render_template("dashboard.html",
-                form=form,
-                name_to_update = name_to_update, id=id)
+            return redirect('/dashboard')
 
     else:
         return render_template("update.html",
             form=form,
             name_to_update = name_to_update,
-            id = id)
+            id = id, page_title=page_title)
 
 @Users_BP.route('/user/add', methods=['GET', 'POST'])
 def add_user():
     name = None
+    page_title = "Registar";
     form = UserForm()
     if form.validate_on_submit():
         #Verificar se esse Email já está na base de dados
@@ -109,15 +107,16 @@ def add_user():
         form.favorite_color.data = ''
         form.password_hash = ''
         flash("O seu utilizador foi criado com sucesso", "sucesso")
-        return redirect(url_for('Users_BP.login'))
+        return redirect('/login');
     our_users = Users.query.order_by(Users.date_added)
-    return render_template("add_user.html", form = form, name=name, our_users=our_users )
+    return render_template("add_user.html", form = form, name=name, our_users=our_users, page_title=page_title )
 
 
 
 @Users_BP.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    page_title = "Login";
     if form.validate_on_submit():
         user = Users.query.filter_by(username=form.username.data).first()
         if user:
@@ -125,12 +124,12 @@ def login():
             if check_password_hash(user.password_hash, form.password.data):
                 login_user(user)
                 flash("Entrada com sucesso!", "sucesso")
-                return redirect(url_for('Posts_BP.posts'))
+                return redirect('/posts')
             else:
                 flash("Palavra-passe incorreta!", "erro")
         else:
             flash("Utilizador não encontrado!", "erro")
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, page_title=page_title)
 
 
 #Create Logout Page
@@ -139,7 +138,7 @@ def login():
 def logout():
     logout_user()
     flash("Saida com sucesso!", "sucesso")
-    return redirect(url_for('Users_BP.login'))
+    return redirect('/login');
 
 
 

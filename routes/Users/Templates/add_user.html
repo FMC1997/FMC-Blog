@@ -1,52 +1,52 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    
-    {% block title %} <title>Index!</title> {% endblock %}
-    <!-- Our CSS-->
-    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+
+{% block title %} <title>Index!</title> {% endblock %}
+<!-- Our CSS-->
+{% block css %}
+{% endblock %}
 
 {% endblock %}
 
 {% block content %}
 
-<p class="page-title"> Preencha todos os dados para se Registar</p>
-    <div class="vertical-content fade-in content">
-            <form method="post" id="form" >
-                {{ form.hidden_tag() }}
-                {{ form.profile_pic(id="file-form", value=form.profile_pic) }}
-            
-                <label for="file-form" class="file-form-label">
-                    <span> 
-                        <div class="logo-pick">
-                                <img src="{{ url_for('static', filename='images/default_profile_pic.svg')}}"  />    
-                            <div class="overlay">
-                                <div class="img"><img src="/static/images/icon_mudar.svg" /></div>
-                            </div>
-                        </div>
-                    </span>
-                </label>
-                {{ form.name.label(class="normal-text") }}
-                {{ form.name(class="input normal-text") }}
-                <br />
-                {{ form.username.label(class="normal-text") }}
-                {{ form.username(class="input normal-text") }}
-                <br />
-                {{ form.email.label(class="normal-text") }}
-                {{ form.email(class="input normal-text") }}
-                <br />
-                {{ form.favorite_color.label(class="normal-text") }}
-                {{ form.favorite_color(class="input normal-text") }}
-                <br />
-                {{ form.password_hash.label(class="normal-text") }}
-                {{ form.password_hash(class="input normal-text") }}
-                <br />
-                {{ form.password_hash2.label(class="normal-text") }}
-                {{ form.password_hash2(class="input normal-text") }}
-                <br />
-                {{form.submit(class="button-set normal-text") }}
+<div class="vertical-content fade-in content">
+    <form method="post" id="form">
+        {{ form.hidden_tag() }}
+        {{ form.profile_pic(id="file-form", value=form.profile_pic) }}
+
+        <label for="file-form" class="file-form-label">
+            <span>
+                <div class="logo-pick">
+                    <img src="{{ url_for('static', filename='images/default_profile_pic.svg')}}" />
+                    <div class="overlay">
+                        <div class="img"><img src="/static/images/icon_mudar.svg" /></div>
+                    </div>
+                </div>
+            </span>
+        </label>
+        {{ form.name.label(class="normal-text") }}
+        {{ form.name(class="input normal-text") }}
+        <br />
+        {{ form.username.label(class="normal-text") }}
+        {{ form.username(class="input normal-text") }}
+        <br />
+        {{ form.email.label(class="normal-text") }}
+        {{ form.email(class="input normal-text") }}
+        <br />
+        {{ form.favorite_color.label(class="normal-text") }}
+        {{ form.favorite_color(class="input normal-text") }}
+        <br />
+        {{ form.password_hash.label(class="normal-text") }}
+        {{ form.password_hash(class="input normal-text") }}
+        <br />
+        {{ form.password_hash2.label(class="normal-text") }}
+        {{ form.password_hash2(class="input normal-text") }}
+        <br />
+        {{form.submit(class="button-set normal-text") }}
 
 
-            </form>
-        </div>
+    </form>
+</div>
 {% endblock %}
