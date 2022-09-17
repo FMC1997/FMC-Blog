@@ -4,15 +4,15 @@
 <body>
 
   <header>
-    <button id="darkMode-toggle"><img src="/static/images/darkMode_icon.svg" alt="" srcset=""></button>
-    <h1 class="logo"><a href="{{ url_for('System_BP.index') }}">Flasker</a></h1>
-    <button alt="" srcset="" id="nav-toggle"> <img src="/static/images/navBarIcon_plan.svg" alt="" /> </button>
+    <button id="darkMode-toggle"><img src="/static/images/System/darkMode_icon.svg" alt="" srcset=""></button>
+    <h1 class="logo"><a href="{{ url_for('System_BP.index') }}">FMC DEV</a></h1>
+    <button alt="" srcset="" id="nav-toggle"> <img src="/static/images/System/navBarIcon_plan.svg" alt="" /> </button>
     <nav>
       <ul>
         {% if current_user.is_authenticated %}
         <li> <a href="{{ url_for('Users_BP.dashboard') }}">Dashboard</a> </li>
         <li> <a href="{{ url_for('Posts_BP.add_post') }}">Add Blog Post</a></li>
-        {% if current_user.id == 3 %}
+        {% if current_user.username == 'FMC' %}
         <li> <a href="{{ url_for('System_BP.admin') }}">Admin</a> </li>
         {% endif %}
         <li> <a href="{{ url_for('Users_BP.logout') }}">Logout</a> </li>

@@ -1,8 +1,10 @@
 from flask import Flask
+from routes.Comments.Comments_BP import Comments_BP
 
 from routes.Users.Users_BP import Users_BP, Users
 from routes.Posts.Posts_BP import Posts_BP
 from routes.System.System_BP import System_BP
+from routes.Comments.Comments_BP import Comments_BP
 from flask_login import LoginManager
 
 from flask import Flask
@@ -14,6 +16,7 @@ app = Flask(__name__)
 app.register_blueprint(Users_BP)
 app.register_blueprint(Posts_BP)
 app.register_blueprint(System_BP)
+app.register_blueprint(Comments_BP)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Begin 001.@localhost/Blog_flask'
 

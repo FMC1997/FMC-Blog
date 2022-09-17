@@ -31,6 +31,13 @@
         text-align-last: center;
         margin-inline: auto;
     }
+
+    img.post_pic {
+        width: 80%;
+        height: 200px;
+        object-fit: contain;
+        margin-inline: auto;
+    }
 </style>
 {% endblock %}
 
@@ -42,15 +49,16 @@
 
 <a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
 <div class=" post-content content">
+    <img src="{{ url_for('static', filename='images/Posts/' + post.post_pic )}}" class="post_pic" />
     <p class="normal-text"> Date: {{ post.date_posted }} </p>
     <div class="normal-text">
         {{ post.content | safe }}
     </div>
     <div class="profile-card">
         {% if post.poster.profile_pic %}
-        <img src="{{ url_for('static', filename='images/' + post.poster.profile_pic )}}" width="150">
+        <img src="{{ url_for('static', filename='images/Users/' + post.poster.profile_pic )}}" width="150">
         {% else %}
-        <img src="{{ url_for('static', filename='images/default_profile_pic.svg')}}" width="150">
+        <img src="{{ url_for('static', filename='images/System/default_profile_pic.svg')}}" width="150">
         {% endif %}
         <p class="normal-text">
             <b>{{ post.poster.name }}</b> <br>

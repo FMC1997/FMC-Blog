@@ -44,7 +44,7 @@
 
 
         <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="posts-title">{{ post.title }}</a>
-        <img src="{{ url_for('static', filename='images/' + post.post_pic )}}" class="post_pic" />
+        <img src="{{ url_for('static', filename='images/Posts/' + post.post_pic )}}" class="post_pic" />
 
         <p class="normal-text"> {{ post.slug }}</p>
         <div class="buttons">

@@ -8,25 +8,25 @@ from werkzeug.utils import secure_filename
 
 
 Posts_BP = Blueprint("Posts_BP", __name__, static_folder="./static", template_folder="Templates")
-
+caminho = "C:/Users/fmcfa/WorkSpace/Web-Design/FMC-Blog"
 class Posts(db.Model):
             id = db.Column(db.Integer, primary_key=True)
             title = db.Column(db.String(255))
             content = db.Column(db.Text)
-            #author = db.Column(db.String(255))
             date_posted = db.Column(db.DateTime, default=datetime.utcnow)
             slug = db.Column(db.String(255))
             post_pic = db.Column(db.String(200), nullable=False)
             #Foreign Key To Link Users (refer to primary key to user)
             poster_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+            comments = db.relationship('Comments', backref='comments') 
 
 #Deleted a Post
 @Posts_BP.route('/posts/delete/<int:id>')
 @login_required
 def delete_post(id):
     post_to_delete = Posts.query.get_or_404(id)
-    id = current_user.id
-    if id == post_to_delete.poster.id or id == 11:
+    user = current_user.username
+    if id == post_to_delete.poster.id or user == 'FMC':
         try:
             db.session.delete(post_to_delete)
             db.session.commit()
@@ -95,9 +95,10 @@ def add_post():
                         poster_id=poster,
                         slug=request.form["slug"])
         if request.files['post_pic']:
+            os.chdir(caminho)
             post.post_pic = request.files['post_pic']    
             pic_filename = secure_filename(post.post_pic.filename)         
-            post.post_pic.save(os.path.join("static/images/", pic_filename))
+            post.post_pic.save(os.path.join("static/images/Posts/", pic_filename))
             post.post_pic = pic_filename
         try:
             db.session.add(post)

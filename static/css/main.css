@@ -200,7 +200,7 @@ a,p {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #008CBA;
+  background-color: var(--box-backgroud);
   overflow: hidden;
   width: 0;
   height: 100%;
@@ -228,6 +228,7 @@ a,p {
 
 .logo-pick img{
   width: 150px;
+  height: 150px;
   border-radius: 81px;
 }
 
@@ -240,7 +241,7 @@ a,p {
     display: block;
     width: 80%;
     padding-inline: 10%;
-    padding-top: 10%;
+    padding-top: 5%;
     border-radius: 0px;
 }
 

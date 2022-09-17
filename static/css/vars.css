@@ -1,5 +1,5 @@
 :root {
-    --bg-svg : url(/static/images/desert_landscape.svg);
+    --bg-svg : url(/static/images/System/desert_landscape.svg);
     --bg-color: #c45f2a; 
     --txt-color: #1c1e20;
     --box-backgroud : rgba(164, 221, 255, 0.40);
@@ -17,7 +17,7 @@
   
   
   .darkMode{
-    --bg-svg : url(/static/images/desert_landscape_night.svg);
+    --bg-svg : url(/static/images/System/desert_landscape_night.svg);
     --txt-color: #ffffff;
     --box-backgroud : rgb(164 221 255 / 41%);
     --witcher : #2ac0c4;

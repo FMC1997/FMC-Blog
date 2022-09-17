@@ -12,11 +12,11 @@
 {% block content %}
 
 {% if id == current_user.id %}
-<h1>Update User</h1>
 <br />
-<a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
+<a href="{{ url_for('Users_BP.dashboard') }}" class="button-set">Back</a>
 <div class="vertical-content fade-in" style="width: fit-content!important; margin:auto">
-    <form action="/update/{{name_to_update.id}}" method="post" enctype="multipart/form-data" class="content">
+    <form action="/update/{{name_to_update.id}}" method="post" accept=".jpg, .jpeg, .png" enctype="multipart/form-data"
+        class="content">
         {{ form.hidden_tag() }}
         {{ form.profile_pic(id="file-form", value=name_to_update.profile_pic) }}
 
@@ -24,12 +24,12 @@
             <span>
                 <div class="logo-pick">
                     {% if current_user.profile_pic %}
-                    <img src="{{ url_for('static', filename='images/' + current_user.profile_pic)}}" />
+                    <img src="{{ url_for('static', filename='images/Users/' + current_user.profile_pic)}}" />
                     {% else %}
-                    <img src="{{ url_for('static', filename='images/default_profile_pic.svg')}}" />
+                    <img src="{{ url_for('static', filename='images/System/default_profile_pic.svg')}}" />
                     {% endif %}
                     <div class="overlay">
-                        <div class="img"><img src="/static/images/icon_mudar.svg" /></div>
+                        <div class="img"><img src="/static/images/System/icon_mudar.svg" /></div>
 
                     </div>
                 </div>
@@ -45,9 +45,6 @@
         <br />
         {{ form.email.label(class="normal-text") }}
         {{ form.email(class="input normal-text", value=name_to_update.email) }}
-        <br />
-        {{ form.favorite_color.label(class="normal-text") }}
-        {{ form.favorite_color(class="input normal-text", value=name_to_update.favorite_color) }}
         <br />
         {{ form.about_author.label(class="normal-text") }} <br />
         <textarea name="about_author" class="input normal-text">{{ name_to_update.about_author }}</textarea>
@@ -69,5 +66,5 @@
 </div>
 <h2>Acess Denied!</h2>
 {% endif %}
-
+<script src="/static/js/file-input.js"></script>
 {% endblock %}

@@ -14,6 +14,36 @@ from datetime import datetime
 Users_BP = Blueprint("Users_BP", __name__, static_folder="./static", template_folder="Templates")
 
 
+class Users(db.Model, UserMixin):
+    id = db.Column (db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False, unique=True)
+    name = db.Column (db.String(100), nullable=False)
+    email = db.Column (db.String(120), nullable=False, unique=True)
+    about_author = db.Column(db.Text(500), nullable=True)
+    date_added = db.Column (db.DateTime, default=datetime.utcnow)
+    profile_pic = db.Column(db.String(200), nullable=True)
+    #hashing password
+    password_hash = db.Column(db.String(128));
+    user_type = db.Column (db.Integer, nullable=False, default=2)
+    #User Can have many Posts
+    posts = db.relationship('Posts', backref='poster')
+    comments = db.relationship('Comments', backref='Comments') 
+
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute!')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password);
+    
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password);
+
+    #Create a String (Dá o erro FSADeprecationWarning)
+    def __repr__(self):
+        return '<Name %r>' % self.name
+
 @Users_BP.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
@@ -51,7 +81,6 @@ def update(id):
     if request.method == "POST":
         name_to_update.name = request.form['name']
         name_to_update.email = request.form['email']
-        name_to_update.favorite_color = request.form['favorite_color']
         name_to_update.username = request.form['username']
         name_to_update.about_author = request.form['about_author']
         #check profile pic exist´s
@@ -62,7 +91,7 @@ def update(id):
             #set uuid
             pic_name = str(uuid.uuid1()) + "_" + pic_filename
             #Save the image
-            name_to_update.profile_pic.save(os.path.join("static/images/", pic_name))
+            name_to_update.profile_pic.save(os.path.join("static/images/Users", pic_name))
             #Change to a string to save to db
             name_to_update.profile_pic = pic_name
             
@@ -97,14 +126,13 @@ def add_user():
         if user is None:
             #Hash the password!!!
             hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
-            user = Users(username = form.username.data, name=form.name.data, email=form.email.data, favorite_color=form.favorite_color.data, password_hash=hashed_pw)
+            user = Users(username = form.username.data, name=form.name.data, email=form.email.data, password_hash=hashed_pw)
             db.session.add(user)
             db.session.commit()
         name = form.name.data
         form.name.data = ''
         form.email.data = ''
         form.username = ''
-        form.favorite_color.data = ''
         form.password_hash = ''
         flash("O seu utilizador foi criado com sucesso", "sucesso")
         return redirect('/login');
@@ -143,34 +171,7 @@ def logout():
 
 
 
-class Users(db.Model, UserMixin):
-    id = db.Column (db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
-    name = db.Column (db.String(100), nullable=False)
-    email = db.Column (db.String(120), nullable=False, unique=True)
-    favorite_color = db.Column(db.String(120))
-    about_author = db.Column(db.Text(500), nullable=True)
-    date_added = db.Column (db.DateTime, default=datetime.utcnow)
-    profile_pic = db.Column(db.String(200), nullable=True)
-    #hashing password
-    password_hash = db.Column(db.String(128));
-    #User Can have many Posts
-    posts = db.relationship('Posts', backref='poster')
 
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable attribute!')
-
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password);
-    
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password);
-
-    #Create a String (Dá o erro FSADeprecationWarning)
-    def __repr__(self):
-        return '<Name %r>' % self.name
 
 
 
