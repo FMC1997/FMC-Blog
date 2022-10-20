@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    
-    {% block title %} <title>Index!</title> {% endblock %}
-    <!-- Our CSS-->
-    {% block css %}<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> {% endblock %}
+
+{% block title %} <title>Index!</title> {% endblock %}
+<!-- Our CSS-->
+{% block css %}{% endblock %}
 
 {% endblock %}
 
-
+{% block backButton %}<a href="{{ url_for('Posts_BP.Blog') }}" class="button-set button-back">Pagina Inicial</a>{%
+endblock %}
 {% block content %}
-<a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
 
 
-    <h1>Hello World!</h1>
 
-    <p>This is my first page</p>
+<h1>Hello World!</h1>
 
-    <p> My name is {{ first_name }}</p>
+<p>This is my first page</p>
+
+<p> My name is {{ first_name }}</p>
 
 {% endblock %}

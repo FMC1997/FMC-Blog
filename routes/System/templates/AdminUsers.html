@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<head>
+    <style>
+        #post_pic {
+            display: block;
+            max-width: 100%;
+            max-height: 200px;
+            overflow: hidden;
+        }
+
+        .content {
+            width: 60%;
+        }
+    </style>
+
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+</head>
+
+
+<body>
+    <div class="vertical-content fade-in ">
+        {% for user in users %}
+        <div class="content horizontal-content fade-in">
+            {% if user.profile_pic == "default" %}
+            <img src="{{ url_for('static', filename='images/System/default_profile_pic.svg')}}" id="post_pic" />
+
+            {% else %}
+            <img src="{{ url_for('static', filename='images/Users/' + user.profile_pic )}}" id="post_pic" />
+
+            {% endif %}
+
+
+            <div class="userContent">
+                <p> <b>ID: </b> {{ user.id }}</p>
+                <p> <b>Username: </b> {{ user.username }}</p>
+                <p><b>Permissões: </b> {{ user.user_type }} </p>
+
+                <form action="{{ url_for('System_BP.setPermissao', id = user.id) }}" method="post"
+                    enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    {{form.permissao(class="input normal-text") }}
+                    {{form.submit(class="button-set normal-text") }}
+                </form>
+
+            </div>
+            <a class="button-danger" href="{{ url_for('Users_BP.apagarUtilizador', id = user.id) }}">Delete User</a>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</body>

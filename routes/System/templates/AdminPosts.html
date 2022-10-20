@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<head>
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+</head>
+
+
+<body>
+
+    <div class="vertical-content fade-in ">
+        {% for post in posts %}
+        <div class="content horizontal-content fade-in">
+            <p> <b>Titulo:</b> {{ post.title }}</p>
+            <p> <b>Slug:</b> {{ post.slug }}</p>
+            <p> <b>Poster:</b> {{ post.poster.username }}</p>
+
+
+            <div>
+                <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="btn-posts button-set btn-text">View Post</a>
+                <a class="button-alert" href="{{ url_for('Posts_BP.edit_post', id=post.id) }}">Edit Post</a>
+                <a class="button-danger" href="{{ url_for('Posts_BP.delete_post', id=post.id) }}">Delete Post</a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</body>

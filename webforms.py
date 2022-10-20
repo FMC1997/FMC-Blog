@@ -1,7 +1,7 @@
-from flask_wtf import FlaskForm;
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError, TextAreaField;
-from wtforms.validators import DataRequired, EqualTo, Length;
-from wtforms.widgets import TextArea
+from random import choices
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField, TextAreaField, EmailField, SelectField
+from wtforms.validators import DataRequired, EqualTo, Length
 from flask_ckeditor import CKEditorField
 from flask_wtf.file import FileField
 
@@ -11,42 +11,49 @@ class AddImage(FlaskForm):
 
 
 class SearchForm(FlaskForm):
-    searched = StringField("Searched", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+    searched = StringField("Pesquisar: ", validators=[DataRequired()])
+    submit = SubmitField("Pesquisar")
 
 
 class LoginForm(FlaskForm):
-    username = StringField("Username:", validators=[DataRequired()])
-    password = PasswordField("Password:", validators=[DataRequired()])
+    username = StringField("Utilizador:", validators=[DataRequired(), Length(
+        min=3, max=20, message="Tem que conter entre 3 a 20 caracteres")])
+    password = PasswordField("Palavra-passe:", validators=[DataRequired(), Length(
+        min=7, max=20, message="Tem que conter entre 7 a 20 caracteres")])
     submit = SubmitField("Entrar!")
 
 
-
 class PostForm(FlaskForm):
-    title = StringField("Title:", validators=[DataRequired()])
-    #content = StringField("Content", validators=[DataRequired()], widget=TextArea())
-    content = CKEditorField('Content:', validators=[DataRequired()])
-    author = StringField("Author:")
-    slug = StringField("Slug:", validators=[DataRequired()])
-    post_pic = FileField("Post Image:")
-    submit = SubmitField("Submit:", validators=[DataRequired()])
-
+    title = StringField("Titulo:", validators=[DataRequired()])
+    content = CKEditorField('Corpo:', validators=[DataRequired()])
+    author = StringField("Autor:")
+    slug = StringField("Titulo:", validators=[DataRequired()])
+    post_pic = FileField("Imagem principal:")
+    submit = SubmitField("Submeter::", validators=[DataRequired()])
 
 
 class UserForm(FlaskForm):
-    name = StringField("Name:", validators=[DataRequired()])
-    username =StringField("Username:", validators=[DataRequired()])
-    email = StringField("Email:", validators=[DataRequired()])
-    favorite_color = StringField("Favorite Color")
-    about_author = TextAreaField("About Author")
-    password_hash = PasswordField('Password', validators=[DataRequired(), EqualTo('password_hash2', message='Password Must Match!')])
-    password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
-    profile_pic = FileField("Profile Pic")
-    submit = SubmitField("Registar")
+    name = StringField("Nome:", validators=[DataRequired(), Length(
+        min=3, max=20, message="Tem que conter entre 3 a 20 caracteres")])
+    username = StringField("Utilizador:", validators=[DataRequired(), Length(
+        min=3, max=20, message="Tem que conter entre 3 a 20 caracteres")])
+    email = EmailField("Email:", validators=[DataRequired()])
+    about_author = TextAreaField("Sobre mim:")
+    password_hash = PasswordField('Palavra-passe: ', validators=[DataRequired(), EqualTo(
+        'password_hash2', message='Password Must Match!'), Length(min=7, max=20, message="Tem que conter entre 7 a 20 caracteres")])
+    password_hash2 = PasswordField(
+        'Confirmar Palavra-passe:', validators=[DataRequired()])
+    profile_pic = FileField("Imagem do Perfil")
+    submit = SubmitField("Submeter")
 
 
+class CommentForm(FlaskForm):
+    comment = TextAreaField("Comentário", validators=[DataRequired(), Length(
+        min=3, max=20, message="Tem que conter entre 3 a 20 caracteres")])
+    submit = SubmitField("Submeter")
 
-class PasswordForm(FlaskForm):
-    email = StringField("What´s your Email", validators=[DataRequired()])
-    password_hash = PasswordField("What´s your Password", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+
+class PermissaoForm(FlaskForm):
+    permissao = SelectField("permissao", choices=[(
+        '1', '1- Root'), ('2', '2- Poster'), ('3', '3- User')])
+    submit = SubmitField("Atualizar Permissão")
