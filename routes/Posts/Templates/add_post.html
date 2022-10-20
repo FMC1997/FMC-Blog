@@ -2,19 +2,17 @@
 
 {% block head %}
 
-{% block title %} <title>Index!</title> {% endblock %}
+{% block title %} <title>Criar Post!</title> {% endblock %}
 
 
 {% endblock %}
 
-
+{% block backButton %}<a href="{{ url_for('Posts_BP.Blog') }}" class="button-set button-back">Pagina Inicial</a>{%
+endblock %}
 {% block content %}
 
-
-{% if current_user.is_authenticated %}
-<a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
 <div class="vertical-content ">
-
+    <!-- Formulário -->
     <form method="post" id="form" class="content fade-in" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ form.title.label(class="normal-text") }}
@@ -28,20 +26,13 @@
 
 
         {{ form.content(class="input", rows="20") }}
-
+        <br>
         {{form.submit(class="button-set form-text") }}
     </form>
-
+    <!-- Editor de texto API (ckeditor)-->
     {{ ckeditor.load() }}
     {{ ckeditor.config(name='content') }}
 
 </div>
-
-{% else %}
-<h1>Must Be Logged In...</h1>
-<p>Sorry, You must be logged in to access this page!</p>
-<a href="{{ url_for('Users_BP.login') }}">Login Here</a>
-{% endif %}
-
 
 {% endblock %}

@@ -1,3 +1,8 @@
+<!--
+  Todas os modelos(páginas) tem em comum certas partes, para não estar sempre a repetir o código criei este ficheiro separados por secções 
+ -->
+
+
 <!doctype html>
 <html lang="en">
 
@@ -5,13 +10,22 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {% block head %}
-  {% block title %} <title>Flasker !</title> {% endblock %}
-  {% block css %} {% endblock %}
-  {% endblock %}
   <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 
+  {% block head %}
+  <!-- Esta secção serve para os modelos adicionarem elementos no cabeçalho, nomeadamente o title e css -->
+
+  <!--Titulo no brower -->
+  {% block title %} <title>Flasker !</title> {% endblock %}
+
+  {% block css %} {% endblock %}
+
+  {% endblock %}
+
+
+
   <style>
+    /* css para tela de carregamento do site  */
     #loadingScreen {
       position: fixed;
       width: 100vw;
@@ -44,12 +58,28 @@
 
 </head>
 
+
 <body>
+
+
+  <!-- Tela de carregamento-->
   <div id="loadingScreen">
     <span class="loader"> <span class="loader-inner"> </span> </span>
   </div>
+
+
+  <!-- incluir o navbar-->
   {% include 'navbar.html' %}
-  <p class="page-title"> {{page_title}} </p>
+
+
+  <!-- Secção para o titulo das páginas-->
+  <div class="page-title"> {% block backButton %} {% endblock %}{{page_title}} </div>
+
+
+
+  <!-- Sistema Flash -->
+
+  <!-- Mensagens de sucesso-->
   {% with messages = get_flashed_messages(category_filter=["sucesso"]) %}
   {% if messages %}
   <div class="Alerta_sucesso fade-in" role="alert">
@@ -59,6 +89,9 @@
   {% endif %}
   {% endwith %}
 
+
+
+  <!-- Mensagens de Erro-->
   {% with messages = get_flashed_messages(category_filter=["erro"]) %}
   {% if messages %}
   <div class="Alerta_erro fullScreen_content slide-in-blurred-top" role="alert">
@@ -73,9 +106,12 @@
   {% endif %}
   {% endwith %}
 
-  {% block content %}
 
-  {% endblock %}
+
+  <!-- Secção para conteudo da Página-->
+  {% block content %} {% endblock %}
+
+  <!-- Scripts necessários em todos os modelo (DarkMode e Flash)-->
   <script src="/static/js/darkmode.js"></script>
   <script src="/static/js/flash.js"></script>
 </body>

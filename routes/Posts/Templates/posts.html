@@ -2,7 +2,7 @@
 
 {% block head %}
 
-{% block title %} <title>Index!</title> {% endblock %}
+{% block title %} <title>Blog</title> {% endblock %}
 <!-- Our CSS-->
 {% block css %}
 
@@ -18,9 +18,8 @@
     .posts-title {
         display: flex;
         justify-content: center;
-        font-size: 1.2em;
+        font-size: 1.8em;
         font-weight: bold;
-        color: unset;
         margin-bottom: 20px;
     }
 </style>
@@ -28,6 +27,9 @@
 {% endblock %}
 
 {% endblock %}
+
+{% block backButton %}<a href="{{ url_for('Posts_BP.Blog') }}" class="button-set button-back">Pagina
+    Inicial</a> {% endblock %}
 
 
 
@@ -43,12 +45,12 @@
     <div class="content fade-in">
 
 
-        <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="posts-title">{{ post.title }}</a>
+        <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="posts-title normal-text">{{ post.title }}</a>
         <img src="{{ url_for('static', filename='images/Posts/' + post.post_pic )}}" class="post_pic" />
 
         <p class="normal-text"> {{ post.slug }}</p>
         <div class="buttons">
-            <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="btn-posts button-set btn-text">View Post</a>
+            <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="button-set">View Post</a>
             {% if post.poster_id == current_user.id or current_user.id == 11 %}
             <a class="button-alert" href="{{ url_for('Posts_BP.edit_post', id=post.id) }}">Edit Post</a>
             <a class="button-danger" href="{{ url_for('Posts_BP.delete_post', id=post.id) }}">Delete Post</a>

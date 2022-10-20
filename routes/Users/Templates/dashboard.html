@@ -14,24 +14,32 @@
   }
 
   .dashboard {
-    max-width: 1000px;
+    max-width: 50vw;
+  }
+
+  .content.horizontal-content.dashboard.fade-in {
     margin-inline: auto;
   }
 </style>
 {% endblock %}
 
 {% endblock %}
-
+{% block backButton %}<a href="{{ url_for('Posts_BP.Blog') }}" class="button-set button-back">Pagina Inicial</a>{%
+endblock %}
 
 {% block content %}
 
-<a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
+
 <div class="content horizontal-content dashboard fade-in ">
-  {% if current_user.profile_pic %}
-  <img src="{{ url_for('static', filename='images/Users/' + current_user.profile_pic )}}" />
-  {% else %}
+
+  <!-- Verifica se o utilizador tem a imagem padrão-->
+  {% if current_user.profile_pic == "default" %}
   <img src="{{ url_for('static', filename='images/System/default_profile_pic.svg')}}" />
+
+  {% else %}
+  <img src="{{ url_for('static', filename='images/Users/' + current_user.profile_pic )}}" />
   {% endif %}
+
 
   <div class="dashboard-card">
     <p class="normal-text">
@@ -44,8 +52,8 @@
     </p>
     <p class="buttons">
       <a href="{{url_for('Users_BP.logout')}}" class="button-set">Logout</a>
-      <a href="{{url_for('Users_BP.update', id=current_user.id)}}" class="button-alert">Edit</a>
-      <a href="{{ url_for('Users_BP.delete', id=current_user.id)}}" class="button-danger">Delete</a>
+      <a href="{{url_for('Users_BP.atualizarUtilizador', id=current_user.id)}}" class="button-alert">Edit</a>
+      <a href="{{ url_for('Users_BP.apagarUtilizador', id=current_user.id)}}" class="button-danger">Delete</a>
     </p>
   </div>
 

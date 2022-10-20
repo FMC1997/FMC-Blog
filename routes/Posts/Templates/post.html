@@ -2,24 +2,23 @@
 
 {% block head %}
 
-{% block title %} <title>Index!</title> {% endblock %}
+{% block title %} <title>{{ post.title }}</title> {% endblock %}
 <!-- Our CSS-->
 {% block css %}
 <style>
-    .profile-card {
+    .profile-content {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         border: 0;
         border-top: 3px;
-        padding-top: 30px;
-        border-style: solid;
-        border-color: floralwhite;
-        width: fit-content;
-        margin-block: 40px;
+        border-style: dotted;
+        border-color: hsl(180deg 62% 39% / 60%);
+        padding: var(--page-margin);
+        align-items: center;
     }
 
 
-    .profile-card img {
+    .profile-content img {
         max-width: 200px;
     }
 
@@ -39,22 +38,27 @@
         margin-inline: auto;
     }
 </style>
+
+
 {% endblock %}
 
 {% endblock %}
 
-
+<!-- Butao para Página Inicial -->
+{% block backButton %}<a href="{{ url_for('Posts_BP.Blog') }}" class="button-set button-back">Pagina Inicial</a>{%
+endblock %}
 {% block content %}
 
 
-<a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
+
 <div class=" post-content content">
     <img src="{{ url_for('static', filename='images/Posts/' + post.post_pic )}}" class="post_pic" />
     <p class="normal-text"> Date: {{ post.date_posted }} </p>
     <div class="normal-text">
         {{ post.content | safe }}
     </div>
-    <div class="profile-card">
+    <div class="profile-content">
+
         {% if post.poster.profile_pic %}
         <img src="{{ url_for('static', filename='images/Users/' + post.poster.profile_pic )}}" width="150">
         {% else %}
@@ -68,17 +72,48 @@
             Author has no about profile yet...
             {% endif %}
         </p>
-    </div>
 
+        <div class="buttons">
 
-    <div class="buttons">
-
-        {% if post.poster_id == current_user.id %}
-        <a href="{{ url_for('Posts_BP.edit_post', id=post.id) }}" class="button-alert">Edit Post</a>
-        <a href="{{ url_for('Posts_BP.delete_post', id=post.id) }}" class="button-danger">Delete Post</a>
-        {% endif %}
+            {% if post.poster_id == current_user.id %}
+            <a href="{{ url_for('Posts_BP.edit_post', id=post.id) }}" class="button-alert">Edit Post</a>
+            <a href="{{ url_for('Posts_BP.delete_post', id=post.id) }}" class="button-danger">Delete Post</a>
+            {% endif %}
+        </div>
     </div>
 </div>
+<div class="vertical-content">
+    <p class="normal-text"> Comentários</p>
+    <a href="{{ url_for('Comments_BP.newComment', id=post.id) }}" class="button-alert">Adicionar Comentário</a>
+    {% for comment in Comments %}
+    <div class="comment-content">
+        <div class="vertical-content">
+            <p class="normal-text">{{ comment.date}}</p>
+            {% if comment.Comments.profile_pic == "default" %}
+            <img src="{{ url_for('static', filename='images/System/default_profile_pic.svg')}}" width="150">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/Users/' + comment.Comments.profile_pic )}}"
+                style="height:50px" alt="">
+
+            {% endif %}
+
+            <div class="normal-text">{{ comment.Comments.username}}</div>
+            <div class="buttons">
+
+                <a href="{{ url_for('Comments_BP.editComment', postId=post.id, Commentid=comment.id) }}"
+                    class="button-alert">Edit
+                    Comment</a>
+                <a href="{{ url_for('Comments_BP.deleteComment', postId=post.id, Comment_id=comment.id) }}"
+                    class="button-danger">Delete Comment</a>
+            </div>
+        </div>
+        <div class="normal-text">{{ comment.comment | safe}}</div>
+
+    </div>
+    {% endfor %}
+</div>
+
+
 
 
 {% endblock %}

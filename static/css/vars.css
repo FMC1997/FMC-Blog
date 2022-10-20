@@ -1,32 +1,45 @@
 :root {
-    --bg-svg : url(/static/images/System/desert_landscape.svg);
-    --bg-color: #c45f2a; 
-    --txt-color: #1c1e20;
-    --box-backgroud : rgba(164, 221, 255, 0.40);
-    --witcher : #2ac0c4;
+    --bg-svg : url();
+    /* COLORS*/
+    --bg-color: hsl(190deg 17% 62%);
+    --header-color: hsl(190deg 28% 75%);
+    --title-color : hsl(190deg 21% 69%);
+    --txt-color: hsl(210, 7%, 12%);
+    --box-backgroud : hsl(191deg 22% 59%);
+    --danger-color: hsl(21, 65%, 47%);
+    --set-color: hsl(96, 65%, 47%);
+    --alert-color: hsl(64, 65%, 47%);
+    --witcher : hsl(182, 65%, 47%);
+    --input-bgColor : hsl(0, 0%, 99%);
+    --primary-Color : hsl(180deg 62% 20%);
+    /* Textos*/
+    --pa-text:1.5rem;
+    --title-text : 1.8rem;
+    /* spaces */
+    --page-margin : 3%;
+    --item-margin : 20%;
+    --button-margin : 1rem;
+
+
     --anim-name : fade-in;
     --bg-name : bg-moving;
-    --danger-color: #c45f2a;
-    --set-color: #68c42a;
-    --alert-color: #bac42a;
-    --pa-text: 22px;
-    --title-text : 1.8em;
-    --page-margin : 5%;
   }
   
   
   
   .darkMode{
-    --bg-svg : url(/static/images/System/desert_landscape_night.svg);
-    --txt-color: #ffffff;
-    --box-backgroud : rgb(164 221 255 / 41%);
-    --witcher : #2ac0c4;
-    --bg-color: #001744;
-    --anim-name: darkmode;
-    --bg-name : bg-darkmode;
-    --danger-color: #c45f2a;
-    --set-color: #68c42a;
-    --alert-color: #bac42a;
+    --bg-svg : url();
+    /* COLORS*/
+    --bg-color: hsl(220deg 100% 5%); 
+    --header-color: hsl(224deg 14% 10%);
+    --title-color : hsl(224deg 14% 13% / 97%);
+    --txt-color: hsl(0, 0%, 82%);
+    --box-backgroud : hsl(224deg 14% 13% / 97%);
+    --danger-color: hsl(21, 65%, 46%);
+    --set-color: hsl(96, 65%, 46%);
+    --alert-color: hsl(64, 65%, 46%);
+    --witcher : hsl(182, 65%, 47%);
+    --input-bgColor : hsl(180, 1%, 19%);
+    --primary-Color : hsl(180deg 62% 39%);
   }
-  
 

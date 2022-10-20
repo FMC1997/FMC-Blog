@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% block title %} <title>Index!</title> {% endblock %}
+
+
+{% endblock %}
+
+
+{% block backButton %}<a href="{{ url_for('Posts_BP.Blog') }}" class="button-set button-back">Pagina Inicial</a>{%
+endblock %}
+
+
+{% block content %}
+
+
+{% if current_user.is_authenticated %}
+
+<div class="vertical-content ">
+
+    <form method="post" id="form" class="content fade-in" enctype="multipart/form-data">
+        {{ formComment.hidden_tag() }}
+        {{ formComment.comment(class="input", rows="20") }}
+        {{formComment.submit(class="button-set form-text") }}
+    </form>
+
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='comment') }}
+
+</div>
+
+{% else %}
+<h1>Must Be Logged In...</h1>
+<p>Sorry, You must be logged in to access this page!</p>
+<a href="{{ url_for('Users_BP.login') }}">Login Here</a>
+{% endif %}
+
+
+{% endblock %}

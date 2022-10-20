@@ -1,14 +1,18 @@
+from asyncio.windows_events import NULL
 from contextlib import nullcontext
 from email.policy import default
-from xml.etree.ElementTree import Comment
-from flask import  redirect, render_template, flash, url_for, Blueprint, request
+from flask import redirect, render_template, flash, url_for, Blueprint, request
 from datetime import datetime
-from flask_login import current_user
+from flask_login import current_user, login_required
 from extensions import db
 from webforms import CommentForm
 
 
-Comments_BP = Blueprint("Comments_BP", __name__, static_folder="./static", template_folder="Templates")
+Comments_BP = Blueprint("Comments_BP", __name__,
+                        static_folder="./static", template_folder="Templates")
+
+# Class para SQLAlchemy(ORM)
+
 
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,45 +22,71 @@ class Comments(db.Model):
     user = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
-def createComment(id):
-    form = CommentForm()
+# Monstra todos os comentários do post
+def showComments(id):
+    comments = Comments.query
+    comments = comments.filter(Comments.post.like(id), Comments.user != NULL)
+
+    comments = comments.order_by(Comments.date)
+    return comments
+
+
+# Cria novo comentário
+@Comments_BP.route('/newComment/<int:id>', methods=['GET', 'POST'])
+@login_required
+def newComment(id):
+    formComment = CommentForm()
+    page_title = "Adicionar Comentário"
     if request.method == "POST":
-        Comment = Comments(comment= request.form["comment"],
-                            post = id,
-                            user= current_user )
-    try:
-        db.session.add(Comment)
-        db.session.commit()
-        form.comment.data = ""
-    except:
-        flash("Erro a publicar o seu commentário, tente novamente!", "erro")
-    return render_template("createComment.html", form=form)
-
-def showComments():
-    comments = Comments.query.order_by(Comments.date)
-    return render_template("showComments.html", comments=comments)
-
-def deleteComment(id):
-    CommentToDelete = Comments.query.get_or_404(id)
-    id = current_user.id
-    if id == CommentToDelete.user.id or id == 11:
+        user = current_user.id
+        post = id
+        Comment = Comments(post=post, user=user,
+                           comment=request.form["comment"])
         try:
-            db.session.delete(CommentToDelete)
+            db.session.add(Comment)
+            db.session.commit()
+            flash("O Comentário foi publicado com sucesso!", "sucesso")
+        except:
+            flash("Ocorreu a criar o seu post, tente novamente", "erro")
+        return redirect(url_for('Posts_BP.post', id=id))
+
+    return render_template("createComment.html", formComment=formComment, page_title=page_title)
+
+
+# Editar o comentário
+@Comments_BP.route('/editComment/<int:Commentid>/<int:postId>', methods=['GET', 'POST'])
+@login_required
+def editComment(Commentid, postId):
+    formComment = CommentForm()
+    commentdb = Comments.query.get_or_404(Commentid)
+
+    if formComment.validate_on_submit():
+        commentdb.comment = formComment.comment.data
+        try:
+            db.session.add(commentdb)
+            db.session.commit()
+            flash("O Comentário foi publicado com sucesso!", "sucesso")
+            return redirect(url_for('Posts_BP.post', id=postId))
+        except:
+            flash("Erro na base de dados", "erro")
+    if current_user.id == commentdb.user:
+        page_title = "A editar Comentário"
+        formComment.comment.data = commentdb.comment
+        return render_template("createComment.html", formComment=formComment, page_title=page_title)
+    else:
+        flash("Não tens a permissões necessárias para editar este comentário!", "erro")
+        return redirect(url_for('Posts_BP.post', id=postId))
+
+
+# Apagar o comentário
+@Comments_BP.route('/deleteComment/<int:Comment_id>/<int:postId>')
+def deleteComment(Comment_id, postId):
+    comment_to_delete = Comments.query.get_or_404(Comment_id)
+    if current_user.id == comment_to_delete.user:
+        try:
+            db.session.delete(comment_to_delete)
             db.session.commit()
             flash("O Post foi apagado com sucesso!", "sucesso")
         except:
-             flash("Houve um problema a apagar o seu comentário, tente novamente mais tarde", "erro")
-    return nullcontext
-
-def editComment(id):
-    CommentToEdit = Comments.get_or_404(id)
-    form = CommentForm()
-    if form.validate_on_submit():
-        CommentToEdit.comment = request.form["comment"]
-        try:
-            db.session.add(CommentToEdit)
-            db.session.commit()
-            flash("O seu comentário foi atualizado com sucesso!", "sucesso")
-        except:
-             flash("Houve um problema a editar o seu comentário, tente novamente mais tarde", "erro")
-    return render_template("createComment.html", form=form)
+            flash("Ocorreu um erro a apagar o comentário, tente novamente", "erro")
+        return redirect(url_for('Posts_BP.post', id=postId))

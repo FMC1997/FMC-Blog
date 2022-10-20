@@ -3,29 +3,64 @@
 
 <body>
 
+  <!-- navBar conteudo-->
   <header>
-    <button id="darkMode-toggle"><img src="/static/images/System/darkMode_icon.svg" alt="" srcset=""></button>
-    <h1 class="logo"><a href="{{ url_for('System_BP.index') }}">FMC DEV</a></h1>
-    <button alt="" srcset="" id="nav-toggle"> <img src="/static/images/System/navBarIcon_plan.svg" alt="" /> </button>
+    <!-- DarkMode icon, Logo e navBar mobile -->
+    <div class="NavBar-hero">
+      <!-- Butao DarkMode ao carregar troca de tema, o ficheiro JS está em /static/js/darkmode.js, e é declarado no ficheiro routes/System/base.html -->
+      <button id="darkMode-toggle"><img src="/static/images/System/darkMode_icon.svg" alt="" srcset=""></button>
+
+      <!-- Logotipo do site, vai para página Index -->
+      <a href="{{ url_for('System_BP.index') }}">FMC DEV</a>
+
+      <!-- Para telas pequenas, o navBar fica na vertical e aparece/desaparece quando se carrega neste butao-->
+      <button alt="" srcset="" id="nav-toggle"> <img src="/static/images/System/navBarIcon_plan.svg" alt="" /> </button>
+    </div>
+
+    <!-- Links respectivos de navegação que aparecem nomeadamente á sua permissão de utilizador -->
     <nav>
       <ul>
+        <!-- Todos os utilizadores podem ver os posts-->
+        <li> <a href="{{ url_for('Posts_BP.Blog') }}">Blog</a> </li>
+
+        <!-- Se o utilizador estiver autenticado -->
         {% if current_user.is_authenticated %}
-        <li> <a href="{{ url_for('Users_BP.dashboard') }}">Dashboard</a> </li>
-        <li> <a href="{{ url_for('Posts_BP.add_post') }}">Add Blog Post</a></li>
-        {% if current_user.username == 'FMC' %}
+
+        <!-- Permissões de Root-->
+        {% if current_user.user_type == 1 %}
         <li> <a href="{{ url_for('System_BP.admin') }}">Admin</a> </li>
         {% endif %}
-        <li> <a href="{{ url_for('Users_BP.logout') }}">Logout</a> </li>
+
+        <!-- Permissoes de Poster -->
+        {% if current_user.user_type == 1 or current_user.user_type == 2 %}
+        <li> <a href=" {{ url_for('Posts_BP.add_post') }}">Add Blog Post</a></li>
+        {% endif %}
+
+        <!-- Se o utilizador não tiver ainda imagem usa a default -->
+        {% if current_user.profile_pic == "default" %}
+        <li id="nav-profile"> <a href="{{url_for('Users_BP.dashboard')}}"><img id="profile-nav"
+              src="{{ url_for('static', filename='images/System/default_profile_pic.svg' )}}" />
+          </a>
+        </li>
+        {% else%}
+        <li id="nav-profile"> <a href="{{url_for('Users_BP.dashboard')}}"><img id="profile-nav"
+              src="{{ url_for('static', filename='images/Users/' + current_user.profile_pic )}}" />
+          </a>
+        </li>
+        {%endif%}
+
+        <!-- Para utilizadores não autenticados-->
         {% else %}
         <li> <a href="{{ url_for('Users_BP.add_user') }}">Register</a> </li>
         <li> <a href="{{ url_for('Users_BP.login') }}">Login</a> </li>
         {% endif %}
-        <li> <a href="{{ url_for('Posts_BP.posts') }}">Posts</a> </li>
+
       </ul>
     </nav>
   </header>
 
-  <script src="/static/js/mobileNav-toggle.js"></script>
+  <!-- Script para butão navBar de telas pequenas-->
+  <script src=" /static/js/mobileNav-toggle.js"></script>
 
 </body>
 

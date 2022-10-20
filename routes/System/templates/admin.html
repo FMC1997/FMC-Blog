@@ -1,25 +1,74 @@
+<!-- Adicionar a base para todos os sites-->
 {% extends 'base.html' %}
 
+
+
+<!-- Secção do cabeçalho -->
 {% block head %}
 
-{% block title %} <title>Index!</title> {% endblock %}
-<!-- Our CSS-->
+<!--Titulo no brower -->
+{% block title %} <title>Painel de adminstração</title> {% endblock %}
+
+
 {% block css %}
+<style>
+    /* Dar Limite de tamnho do iframe*/
+    iframe#admin-content {
+        height: 80vh;
+        width: 80vw;
+    }
+</style>
 {% endblock %}
 
+
 {% endblock %}
+
+
+
+<!-- Botão de voltar atrás -->
+{% block backButton %}<a href="{{ url_for('Posts_BP.Blog') }}" class="button-set button-back">Pagina Inicial</a>{%
+endblock %}
 
 {% block content %}
 
 
-<a href="{{ url_for('Posts_BP.posts') }}" class="button-set">Back</a>
 
-<div class="content horizontal-content fade-in ">
-    <a href="{{ url_for('System_BP.gallery', folder = 'Posts')}}" class="button-set">Gallery</a>
+
+<div class="content horizontal-content">
+
+    <!-- Secção com botões que altera o conteudo do iframe por JS-->
+    <div class="vertical-content fade-in ">
+
+        <!-- Para não dar erro de syntax tive que criar uma variável para definir o link do iframe -->
+        {% set link = url_for('System_BP.gallery', folder='Posts') %}
+        <!-- Ao clicar o iframe muda o caminho do conteudo-->
+        <a onclick="setPage('{{link}}')" class="normal-text">Gallery</a>
+
+
+        {% set link = url_for('System_BP.AdminPosts') %}
+        <a onclick="setPage('{{link}}')" class="normal-text">Posts</a>
+
+
+        {% set link = url_for('System_BP.AdminUsers') %}
+        <a onclick="setPage('{{link}}')" class="normal-text">Users</a>
+    </div>
+
+
+    <!-- iframe que muda de conteudo nomeadamente o que o utilizador escolhe -->
+    <iframe src="{{ url_for('System_BP.gallery', folder = 'Posts')}}" id="admin-content" title="description"></iframe>
+
 </div>
 
-<div class="content vertical-content fade-in ">
-    <h1>Here more admin stuff</h1>
-</div>
+
+<!-- Muda o conteudo do iframe -->
+<script>
+    const iframe = document.getElementById("admin-content");
+    setPage = function (page) {
+        iframe.setAttribute("src", page)
+    }
+
+</script>
+
+
 
 {% endblock %}

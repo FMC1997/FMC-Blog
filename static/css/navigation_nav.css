@@ -1,40 +1,48 @@
-@import "anim.css";
+
 body{
     margin: 0;
 }
 
 
-header{
-    background-color: var(--box-backgroud);
+header {
+    background-color: var(--header-color);
     text-align: center;
     position: relative;
     display: inline-block;
     z-index: 99;
     width: 100%;
+    -webkit-box-shadow: 0px -20px 38px 0px var(--primary-Color);
+    -moz-box-shadow: 0px -20px 38px 0px var(--primary-Color);
+    box-shadow: 0px -20px 38px 0px var(--primary-Color);
+    border-bottom: solid 4px var(--primary-Color);
 }
 
 button#darkMode-toggle{
     background: none;
     border: none;
-    position: absolute;
-    left: 20px;
-    top: 20px;
-    margin-block: auto;
+    padding-left: 5%;
+   
 }
 
+#darkMode-toggle img {
+    background-color: white;
+    border-radius: 33px;
+    border: 3px solid var(--primary-Color);
+}
 #nav-toggle{
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    margin-left: 1em;
     height: 40px;
     z-index: 2;
     border: 0;
     background: none;
+    
 }
 
 
 #nav-toggle img{
+    height: 100%;
+}
+
+.nav-toggle-label img{
     height: 100%;
 }
 
@@ -47,7 +55,7 @@ nav {
     right: 0;
     top: 0;
     height: 100vh;
-    background-color: hsla(202, 51%, 61%, 0.897);
+    background-color: var(--header-color);
 }
 
 nav ul {
@@ -69,20 +77,47 @@ nav a{
     font-size: .98rem;
     text-transform: uppercase;
     font-weight: bold;
+    transition: color 300ms;
 }
 
 nav a:hover{
-    color: #1f7e77;
+    color: var(--primary-Color);
 
 }
-/*
+
+
+.NavBar-hero {
+        padding-block: 30px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    
+}
+.NavBar-hero a{
+    text-decoration: none;
+    color: var(--primary-Color);
+    font-size: 30px;
+    font-weight: bold;
+}
+
+img#profile-nav {
+        
+        width: 15vh;
+        height: 15vh;
+    margin-top: 10vh;
+        border-radius: 53%;
+        
+    }
+
+
+
 @supports (backdrop-filter: blur(1rem)){
     nav{
         background-color: hsl(202, 51%, 61% / 0.431);
         backdrop-filter: blur(1rem);
     }
 }
-*/
+
 @media screen and (min-width: 900px) {
     #nav-toggle{
         display: none;
@@ -92,8 +127,9 @@ nav a:hover{
         display: grid;
         
     }
-    .logo{
+    .NavBar-hero{
         grid-column: 1 /2 ;
+        
         
     }
     nav {
@@ -104,11 +140,12 @@ nav a:hover{
         align-items: center;
         margin-right: 2.46%;
         display: flex !important;
-        transform: matrix(0,0,0)!important;
+        transform: translate(unset);
     }
     nav ul{
         display: flex;
         justify-content: flex-end;
+        align-items: center;
     }
     nav a {
         opacity: 1;
@@ -117,4 +154,14 @@ nav a:hover{
         margin: 0;
         margin-left: 1rem;
     }
+   img#profile-nav{
+        display: block;
+        width: 8vh;
+        height: 8vh;
+        margin-top: unset;
+   }
+   #nav-profile{
+    border-left: 3px solid var(--primary-Color);
+    padding-left: 6%
+   }
 }
