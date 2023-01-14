@@ -2,8 +2,9 @@
     --bg-svg : url();
     /* COLORS*/
     --bg-color: hsl(190deg 17% 62%);
+    --box-bg : #d1d1d1;
     --header-color: hsl(190deg 28% 75%);
-    --title-color : hsl(190deg 21% 69%);
+    --title-color : linear-gradient(135deg, #1F6BAB 9.9%, #1F6BAB 22.4%, #1F6BAB 32.81%, #2295A8 71.88%);
     --txt-color: hsl(210, 7%, 12%);
     --box-backgroud : hsl(191deg 22% 59%);
     --danger-color: hsl(21, 65%, 47%);
@@ -30,9 +31,10 @@
   .darkMode{
     --bg-svg : url();
     /* COLORS*/
-    --bg-color: hsl(220deg 100% 5%); 
-    --header-color: hsl(224deg 14% 10%);
-    --title-color : hsl(224deg 14% 13% / 97%);
+    --bg-color: hsl(0deg 0% 11%);
+    --box-bg : #272727;
+    --header-color: hsl(0deg 5% 8%);
+    --title-color : linear-gradient(135deg, #1F6BAB 9.9%, #1F6BAB 22.4%, #1F6BAB 32.81%, #2295A8 71.88%);
     --txt-color: hsl(0, 0%, 82%);
     --box-backgroud : hsl(224deg 14% 13% / 97%);
     --danger-color: hsl(21, 65%, 46%);

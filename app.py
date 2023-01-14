@@ -1,14 +1,11 @@
-from flask import Flask
-
-from routes.Users.Users_BP import Users_BP, Users
-from routes.Posts.Posts_BP import Posts_BP
-from routes.System.System_BP import System_BP
-from routes.Comments.Comments_BP import Comments_BP
+from flask import Flask, render_template
 from flask_login import LoginManager
 
-from flask import Flask, render_template
-from extensions import db,migrate, ckeditor
-
+from extensions import ckeditor, db, migrate
+from routes.Comments.Comments_BP import Comments_BP
+from routes.Posts.Posts_BP import Posts_BP
+from routes.System.System_BP import System_BP
+from routes.Users.Users_BP import Users, Users_BP
 
 app = Flask(__name__)
 

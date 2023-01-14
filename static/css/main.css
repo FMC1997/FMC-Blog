@@ -2,16 +2,22 @@
 @import "navigation_nav.css";
 @import "anim.css";
 
+*{
+  transition: background-color 1s ease, color 1s ease;
+}
+
 body{
     background-image: var(--bg-svg);
     background-repeat: no-repeat;
     background-color: var(--bg-color);
+    
 }
 
 a,p {
   text-decoration: none;
   font-size: 1em;
 }
+
 
 
 .page-title {
@@ -21,7 +27,7 @@ a,p {
   padding: 40px;
   background: var(--title-color);
   font-size: var(--title-text);
-  color: var(--primary-Color);
+  color: var(--bg-color);
   text-align: center;
   margin-top: 0px;
   border-radius: 0px 0px 25px 25px;
@@ -34,6 +40,8 @@ a,p {
 }
 a.button-set.button-back {
     font-size: 1rem;
+    color: var(--bg-color);
+
 }
 .buttons {
     padding-top: var(--button-margin);
@@ -160,6 +168,10 @@ a.button-set.button-back {
 
 }
 
+.vertical-content .content{
+  padding: var(--page-margin);
+}
+
 .horizontal-content {
   
   display: flex;
@@ -225,12 +237,10 @@ a.button-set.button-back {
 }
 
 .content{
-  padding: 30px;
   border-radius: 15px;
-  background: var(--title-color);
+  background: var(--box-bg);
   box-shadow: hsl(0deg 0% 0% / 22%) 13px 30px 41px -8px;
   margin: var(--page-margin) ;
-  border: solid 1px var(--primary-Color);
 }
 
 .overlay {
@@ -265,7 +275,6 @@ a.button-set.button-back {
 }
 
 .logo-pick img{
-  width: 150px;
   height: 150px;
   border-radius: 81px;
 }

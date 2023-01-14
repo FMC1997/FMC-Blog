@@ -22,6 +22,11 @@
         font-weight: bold;
         margin-bottom: 20px;
     }
+
+    .post_Card {
+        background-color: var(--box-bg);
+        padding: var(--page-margin);
+    }
 </style>
 
 {% endblock %}
@@ -43,18 +48,13 @@
 <div class="column-content ">
     {% for post in posts %}
     <div class="content fade-in">
-
-
-        <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="posts-title normal-text">{{ post.title }}</a>
         <img src="{{ url_for('static', filename='images/Posts/' + post.post_pic )}}" class="post_pic" />
-
-        <p class="normal-text"> {{ post.slug }}</p>
-        <div class="buttons">
-            <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="button-set">View Post</a>
-            {% if post.poster_id == current_user.id or current_user.id == 11 %}
-            <a class="button-alert" href="{{ url_for('Posts_BP.edit_post', id=post.id) }}">Edit Post</a>
-            <a class="button-danger" href="{{ url_for('Posts_BP.delete_post', id=post.id) }}">Delete Post</a>
-            {% endif %}
+        <div class="post_Card">
+            <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="posts-title normal-text">{{ post.title }}</a>
+            <p class="normal-text"> {{ post.slug }}</p>
+            <div class="buttons">
+                <a href="{{ url_for('Posts_BP.post', id=post.id) }}" class="button-set">View Post</a>
+            </div>
         </div>
     </div>
     {% endfor %}

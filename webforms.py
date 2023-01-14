@@ -29,7 +29,7 @@ class PostForm(FlaskForm):
     author = StringField("Autor:")
     slug = StringField("Titulo:", validators=[DataRequired()])
     post_pic = FileField("Imagem principal:")
-    submit = SubmitField("Submeter::", validators=[DataRequired()])
+    submit = SubmitField("Submeter:", validators=[DataRequired()])
 
 
 class UserForm(FlaskForm):
